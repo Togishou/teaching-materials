@@ -86,15 +86,26 @@
        font-size:14px;font-weight:600;cursor:pointer;transition:.15s;}
   .btn:hover{background:#2563a0;}
   .btn.ghost{background:#eef2f7;color:var(--ink);}
+  .btn.danger{background:#e35353;}
+  .btn.danger:hover{background:#c83f3f;}
   .hint{font-size:12px;color:var(--sub);line-height:1.5;margin:4px 0 0;}
   .mg-log{margin-top:12px;font-size:13px;color:var(--accent);min-height:18px;white-space:pre-wrap;word-break:break-all;}
-  .del-list{max-height:46vh;overflow:auto;border:1px solid var(--line);border-radius:10px;}
+  .tok-box{background:#f8fafc;border:1px dashed var(--line);border-radius:10px;padding:12px;margin-bottom:16px;}
+  /* ===== 登录 / 设置 ===== */
+  .login-mask{display:none;position:fixed;inset:0;background:rgba(15,30,55,.55);z-index:200;align-items:flex-start;justify-content:center;padding:60px 12px;overflow:auto;}
+  .login-err{color:#e35353;font-size:13px;min-height:18px;margin-top:6px;}
+  /* ===== 删除工具栏 ===== */
+  .del-toolbar{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-bottom:none;
+               border-radius:10px 10px 0 0;background:#f7faff;flex-wrap:wrap;}
+  .sel-all{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink);cursor:pointer;user-select:none;}
+  .sel-count{font-size:13px;color:var(--sub);}
+  .row-cb{width:16px;height:16px;flex:none;cursor:pointer;}
+  .del-list{max-height:42vh;overflow:auto;border:1px solid var(--line);border-radius:0 0 10px 10px;}
   .del-row{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);font-size:13px;}
   .del-row:last-child{border-bottom:none;}
   .del-name{flex:1;word-break:break-all;}
   .del-btn{padding:4px 12px;border:none;border-radius:8px;background:#e35353;color:#fff;font-size:12px;cursor:pointer;white-space:nowrap;}
   .del-btn:hover{background:#c83f3f;}
-  .tok-box{background:#f8fafc;border:1px dashed var(--line);border-radius:10px;padding:12px;margin-bottom:16px;}
 </style>
 </head>
 <body>
@@ -116,6 +127,32 @@
   <footer>本页为教学资料索引 · 由 WorkBuddy 生成并部署</footer>
 </div>
 
+<!-- 管理员登录 / 首次设置 -->
+<div class="login-mask" id="login-mask">
+  <div class="panel" style="max-width:420px;">
+    <div class="panel-head">
+      <h2 id="login-title">管理员登录</h2>
+      <button class="x" id="login-close">×</button>
+    </div>
+    <div class="panel-body">
+      <div id="login-form">
+        <div class="field"><label>管理员账号</label><input id="adm-u" type="text" placeholder="输入账号" autocomplete="username" /></div>
+        <div class="field"><label>密码</label><input id="adm-p" type="password" placeholder="输入密码" autocomplete="current-password" /></div>
+        <div class="login-err" id="login-err"></div>
+        <button class="btn" id="login-go">登录</button>
+      </div>
+      <div id="setup-form" style="display:none;">
+        <div class="field"><label>设置管理员账号</label><input id="su-u" type="text" placeholder="如 admin" autocomplete="username" /></div>
+        <div class="field"><label>设置密码（至少 4 位）</label><input id="su-p" type="password" placeholder="设置登录密码" autocomplete="new-password" /></div>
+        <div class="field"><label>确认密码</label><input id="su-p2" type="password" placeholder="再次输入密码" autocomplete="new-password" /></div>
+        <div class="login-err" id="setup-err"></div>
+        <button class="btn" id="setup-go">设置并进入</button>
+      </div>
+      <div class="hint" id="login-hint">首次使用请设置管理员账号与密码；之后每次修改内容需先登录验证。本功能为浏览器端门禁，仅防止误操作，不代表绝对安全。</div>
+    </div>
+  </div>
+</div>
+
 <!-- 管理面板 -->
 <div class="mask" id="mgmt">
   <div class="panel">
@@ -127,10 +164,10 @@
       <div class="tok-box">
         <div class="field" style="margin-bottom:8px;">
           <label>GitHub Token（Personal Access Token）</label>
-          <input id="mg-token" type="password" placeholder="粘贴具有 repo / public_repo 权限的 Token" />
+          <input id="mg-token" type="password" placeholder="粘贴具有 repo / public_repo 权限的 Token" autocomplete="off" />
         </div>
-        <button class="btn ghost" id="mg-save-token" style="padding:6px 12px;font-size:13px;">记住本会话</button>
-        <div class="hint">Token 仅保存在当前标签页（sessionStorage），关闭页面即清除，不会写入页面源码。需在 GitHub → Settings → Developer settings → PAT 生成一个具备 <b>repo</b>（或 public_repo）权限的令牌。</div>
+        <button class="btn ghost" id="mg-save-token" style="padding:6px 12px;font-size:13px;">记住 Token（长期）</button>
+        <div class="hint">Token 长期保存在本机浏览器（localStorage），每次上传/删除自动调用，不会写入页面源码。需在 GitHub → Settings → Developer settings → PAT 生成一个具备 <b>repo</b>（或 public_repo）权限的令牌。</div>
       </div>
 
       <div class="tabs">
@@ -169,6 +206,11 @@
         <div class="field check">
           <input id="del-file" type="checkbox" checked />
           <label>删除条目时，同时删除仓库中的对应文件</label>
+        </div>
+        <div class="del-toolbar">
+          <label class="sel-all"><input type="checkbox" id="del-all" /> 全选</label>
+          <button class="btn danger" id="del-sel" style="padding:6px 14px;font-size:13px;">删除选中</button>
+          <span class="sel-count" id="del-count">已选 0 项</span>
         </div>
         <div class="del-list" id="del-list"></div>
       </div>
@@ -242,7 +284,8 @@ qEl.addEventListener('input',render);
 /* ===== GitHub API 封装 ===== */
 const GH_OWNER='Togishou', GH_REPO='teaching-materials', GH_BRANCH='main';
 const API=`https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents`;
-function getToken(){return (sessionStorage.getItem('gh_token')||'').trim() || document.getElementById('mg-token').value.trim();}
+const mgToken=document.getElementById('mg-token');
+function getToken(){return (localStorage.getItem('tm_token_v1')||'').trim() || mgToken.value.trim();}
 function ghHeaders(){const h={'Accept':'application/vnd.github+json','Content-Type':'application/json'};const t=getToken();if(t)h['Authorization']=`Bearer ${t}`;return h;}
 async function ghReq(method,path,body){
   const r=await fetch(`${API}/${path}`,{method,headers:ghHeaders(),body:body?JSON.stringify(body):undefined});
@@ -264,8 +307,69 @@ async function saveData(){
 }
 async function reload(){try{const r=await fetch('./site_data.json?_='+Date.now(),{cache:'no-store'});if(r.ok)DATA=await r.json();}catch(e){}buildChips();render();}
 
+/* ===== 管理员账号 / 密码门禁 ===== */
+const LS_ADMIN='tm_admin_v1', SS_AUTH='tm_auth_v1';
+function hashPwd(s){let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return h.toString(16);}
+function getAdmin(){const v=localStorage.getItem(LS_ADMIN);if(!v)return null;const i=v.indexOf('::');return{u:v.slice(0,i),p:v.slice(i+2)};}
+function isSetup(){return !!getAdmin();}
+function isAuthed(){return sessionStorage.getItem(SS_AUTH)==='1';}
+function doLogin(u,p){const a=getAdmin();return !!a && u===a.u && hashPwd(p)===a.p;}
+
+const loginMask=document.getElementById('login-mask');
+function show(id){document.getElementById(id).style.display='block';}
+function hide(id){document.getElementById(id).style.display='none';}
+
+function openMgmt(){
+  if(!isSetup()){
+    document.getElementById('login-title').textContent='首次设置管理员';
+    show('setup-form'); hide('login-form');
+    document.getElementById('setup-err').textContent='';
+    loginMask.style.display='flex'; return;
+  }
+  if(isAuthed()){ openPanel(); return; }
+  document.getElementById('login-title').textContent='管理员登录';
+  show('login-form'); hide('setup-form');
+  document.getElementById('login-err').textContent='';
+  document.getElementById('adm-u').value=''; document.getElementById('adm-p').value='';
+  loginMask.style.display='flex';
+}
+
+document.getElementById('login-close').onclick=()=>{loginMask.style.display='none';};
+loginMask.onclick=e=>{if(e.target===loginMask)loginMask.style.display='none';};
+
+document.getElementById('login-go').onclick=()=>{
+  const u=document.getElementById('adm-u').value.trim(), p=document.getElementById('adm-p').value;
+  if(doLogin(u,p)){ sessionStorage.setItem(SS_AUTH,'1'); loginMask.style.display='none'; openPanel(); }
+  else document.getElementById('login-err').textContent='❌ 账号或密码错误';
+};
+
+document.getElementById('setup-go').onclick=()=>{
+  const u=document.getElementById('su-u').value.trim();
+  const p=document.getElementById('su-p').value, p2=document.getElementById('su-p2').value;
+  const err=document.getElementById('setup-err');
+  if(!u){err.textContent='❌ 请填写账号';return;}
+  if(p.length<4){err.textContent='❌ 密码至少 4 位';return;}
+  if(p!==p2){err.textContent='❌ 两次密码不一致';return;}
+  localStorage.setItem(LS_ADMIN, u+'::'+hashPwd(p));
+  sessionStorage.setItem(SS_AUTH,'1');
+  loginMask.style.display='none';
+  openPanel();
+};
+
 /* ===== 面板交互 ===== */
 const mask=document.getElementById('mgmt'), logEl=document.getElementById('mg-log');
+const upCat=document.getElementById('up-cat'), delList=document.getElementById('del-list');
+const delAll=document.getElementById('del-all'), delCount=document.getElementById('del-count'),
+      delSel=document.getElementById('del-sel');
+
+function openPanel(){
+  upCat.innerHTML='';
+  DATA.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;upCat.appendChild(o);});
+  const t=localStorage.getItem('tm_token_v1'); if(t)mgToken.value=t;
+  renderDeleteList();
+  mask.style.display='flex';
+}
+
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
   t.classList.add('active');
@@ -274,24 +378,19 @@ document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{
   document.getElementById('tab-del').style.display=tab==='del'?'block':'none';
   if(tab==='del')renderDeleteList();
 });
-document.getElementById('mg-open').onclick=()=>{
-  mask.style.display='flex';
-  const sel=document.getElementById('up-cat'); sel.innerHTML='';
-  DATA.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;sel.appendChild(o);});
-  const t=sessionStorage.getItem('gh_token'); if(t)document.getElementById('mg-token').value=t;
-  renderDeleteList();
-};
+document.getElementById('mg-open').onclick=openMgmt;
 document.getElementById('mg-close').onclick=()=>{mask.style.display='none';};
 mask.onclick=e=>{if(e.target===mask)mask.style.display='none';};
 document.getElementById('mg-save-token').onclick=()=>{
-  const t=document.getElementById('mg-token').value.trim();
-  if(t){sessionStorage.setItem('gh_token',t);alert('Token 已保存（本标签页会话内有效）');}
+  const t=mgToken.value.trim();
+  if(t){localStorage.setItem('tm_token_v1',t);alert('Token 已长期保存（本机浏览器）');}
   else alert('请先填写 Token');
 };
 
 /* 上传 */
 document.getElementById('up-go').onclick=async()=>{
-  const catId=document.getElementById('up-cat').value;
+  if(!isAuthed()){logEl.textContent='❌ 请先以管理员身份登录';return;}
+  const catId=upCat.value;
   const f=document.getElementById('up-file').files[0];
   const localOnly=document.getElementById('up-local').checked;
   const name=document.getElementById('up-name').value.trim()||(f?f.name:'');
@@ -312,39 +411,87 @@ document.getElementById('up-go').onclick=async()=>{
       await ghReq('PUT',rel,{message:'上传 '+name,content:b64,branch:GH_BRANCH,sha:sha||undefined});
       addItem(catId,name,rel,human(f.size),note);
     }
+    if(mgToken.value.trim())localStorage.setItem('tm_token_v1',mgToken.value.trim());
     await saveData();
     await reload();
     logEl.textContent='✅ 已保存并刷新';
   }catch(e){logEl.style.color='#e35353';logEl.textContent='❌ '+e.message;}
 };
 
-/* 删除列表 */
+/* 删除列表（含勾选框） */
 function renderDeleteList(){
-  const box=document.getElementById('del-list');box.innerHTML='';
+  delList.innerHTML='';
   let n=0;
-  DATA.forEach(c=>c.items.forEach((it,idx)=>{
+  DATA.forEach(c=>c.items.forEach((it)=>{
     n++;
     const row=document.createElement('div');row.className='del-row';
-    row.innerHTML=`<span class="del-name">[${esc(c.name)}] ${esc(it[0])} ${it[1]?'':'<span class="local">本地</span>'}</span>`;
+    const cb=document.createElement('input');cb.type='checkbox';cb.className='row-cb';
+    cb._cat=c; cb._item=it; cb.onchange=updateDelCount;
+    row.appendChild(cb);
+    const nm=document.createElement('span');nm.className='del-name';
+    nm.innerHTML=`[${esc(c.name)}] ${esc(it[0])} ${it[1]?'':'<span class="local">本地</span>'}`;
+    row.appendChild(nm);
     const btn=document.createElement('button');btn.className='del-btn';btn.textContent='删除';
-    btn.onclick=()=>delItem(c.id,idx,it[1]);
-    row.appendChild(btn);box.appendChild(row);
+    btn.onclick=()=>delItem(c.id,it,it[1]);
+    row.appendChild(btn);
+    delList.appendChild(row);
   }));
-  if(n===0)box.innerHTML='<div class="del-row">暂无条目</div>';
+  if(n===0)delList.innerHTML='<div class="del-row">暂无条目</div>';
+  delAll.checked=false;
+  updateDelCount();
 }
-async function delItem(catId,idx,link){
+function updateDelCount(){
+  const n=delList.querySelectorAll('input.row-cb:checked').length;
+  delCount.textContent='已选 '+n+' 项';
+}
+delAll.onchange=()=>{
+  delList.querySelectorAll('input.row-cb').forEach(cb=>cb.checked=delAll.checked);
+  updateDelCount();
+};
+delSel.onclick=async()=>{
+  if(!isAuthed()){logEl.textContent='❌ 请先以管理员身份登录';return;}
+  if(!getToken()){logEl.textContent='❌ 请先填写 GitHub Token';return;}
+  const cbs=[...delList.querySelectorAll('input.row-cb:checked')];
+  if(cbs.length===0){logEl.textContent='⚠️ 未勾选任何条目';return;}
+  const list=cbs.map(cb=>({c:cb._cat,it:cb._item}));
+  const withFile=document.getElementById('del-file').checked;
+  if(!confirm(`确定删除选中的 ${list.length} 项？`+(withFile?'（对应仓库文件将一并删除）':'')))return;
+  logEl.style.color='var(--accent)';logEl.textContent=`⏳ 删除中（0/${list.length}）…`;
+  let done=0;
+  try{
+    for(const {c,it} of list){
+      const idx=c.items.indexOf(it); if(idx<0)continue;
+      const link=it[1];
+      if(link && withFile){
+        try{const sha=await getSha(link);if(sha)await ghReq('DELETE',link,{message:'删除 '+it[0],sha,branch:GH_BRANCH});}catch(e){}
+      }
+      c.items.splice(idx,1);
+      done++; logEl.textContent=`⏳ 删除中（${done}/${list.length}）…`;
+    }
+    if(mgToken.value.trim())localStorage.setItem('tm_token_v1',mgToken.value.trim());
+    await saveData();
+    await reload(); renderDeleteList();
+    logEl.textContent=`✅ 已删除 ${list.length} 项`;
+  }catch(e){logEl.style.color='#e35353';logEl.textContent='❌ '+e.message;}
+};
+
+/* 单条删除 */
+async function delItem(catId,itemObj,link){
+  if(!isAuthed()){logEl.textContent='❌ 请先以管理员身份登录';return;}
   if(!getToken()){logEl.textContent='❌ 请先填写 GitHub Token';return;}
   if(!confirm('确定删除该项？'+(link?'（将从仓库删除对应文件）':'')))return;
   logEl.style.color='var(--accent)';logEl.textContent='⏳ 删除中…';
   try{
     const c=DATA.find(x=>x.id===catId);
-    const it=c.items.splice(idx,1)[0];
+    const idx=c.items.indexOf(itemObj); if(idx<0){logEl.textContent='⚠️ 该项已不存在';return;}
     if(link && document.getElementById('del-file').checked){
-      try{const sha=await getSha(link);if(sha)await ghReq('DELETE',link,{message:'删除 '+it[0],sha,branch:GH_BRANCH});}
+      try{const sha=await getSha(link);if(sha)await ghReq('DELETE',link,{message:'删除 '+itemObj[0],sha,branch:GH_BRANCH});}
       catch(e){logEl.textContent='⚠️ 仓库文件删除失败（可能已不存在），继续更新索引';}
     }
+    c.items.splice(idx,1);
+    if(mgToken.value.trim())localStorage.setItem('tm_token_v1',mgToken.value.trim());
     await saveData();
-    await reload();renderDeleteList();
+    await reload(); renderDeleteList();
     logEl.textContent='✅ 已删除';
   }catch(e){logEl.style.color='#e35353';logEl.textContent='❌ '+e.message;}
 }
