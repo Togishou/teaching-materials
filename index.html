@@ -213,15 +213,15 @@ function render(){
     const rows=m.map(it=>{
       const link=it[1];
       const note=it[3]?`<div class="note">📝 ${esc(it[3])}</div>`:'';
-      const nameTd=link?`<a href="${esc(link)}" target="_blank" rel="noopener">${esc(it[0])}</a>${note}`:`<span>${esc(it[0])}</span>${note}`;
-      const stat=link?`<span class="ok">✅ 可打开</span>`:`<span class="local">⚠️ 本地文件</span>`;
+      const nameTd=link?`<a href="${esc(link)}" download rel="noopener">${esc(it[0])}</a>${note}`:`<span>${esc(it[0])}</span>${note}`;
+      const stat=link?`<span class="ok">⬇️ 点击下载</span>`:`<span class="local">⚠️ 本地文件</span>`;
       return `<tr><td class="name">${nameTd}</td><td class="type">${esc(it[2]||'')}</td><td class="stat">${stat}</td></tr>`;
     }).join('');
     const card=document.createElement('div'); card.className='cat';
     card.innerHTML=`<div class="cat-head"><div class="cat-ico">${c.icon}</div>
       <div class="cat-title">${esc(c.name)}</div><div class="cat-meta">${m.length} 项</div></div>
       <div class="cat-desc">${esc(c.desc)}</div>
-      <table><thead><tr><th>文件 / 目录</th><th>大小 / 数量</th><th class="col-stat">状态</th></tr></thead>
+      <table><thead><tr><th>文件 / 目录</th><th>大小 / 数量</th><th class="col-stat">操作</th></tr></thead>
       <tbody>${rows}</tbody></table>`;
     listEl.appendChild(card);
   });
