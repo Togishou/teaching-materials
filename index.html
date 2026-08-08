@@ -52,6 +52,9 @@
   .note{font-size:12px;color:var(--sub);margin-top:3px;}
   .ok{color:#1a9e6b;font-weight:600;}
   .local{color:#c08a00;font-weight:600;}
+  .dl-btn{display:inline-block;padding:4px 12px;border-radius:8px;background:var(--accent);color:#fff;font-weight:600;
+          text-decoration:none;font-size:12px;transition:.15s;cursor:pointer;}
+  .dl-btn:hover{background:#2563a0;}
   tr:hover td{background:#f7fbff;}
   .empty{text-align:center;color:var(--sub);padding:40px 0;font-size:15px;}
   footer{text-align:center;color:var(--sub);font-size:12px;padding:24px;border-top:1px solid var(--line);}
@@ -117,7 +120,7 @@
 <body>
 <header>
   <h1>日语高考教学资料 · 分类索引</h1>
-  <p>12 大类 · 可在线浏览与点击打开（教材/课件为本地文件）</p>
+  <p>12 大类 · 点文件名在线预览，点「下载」按钮保存（教材/课件为本地文件）</p>
 </header>
 
 <div class="wrap">
@@ -213,8 +216,8 @@ function render(){
     const rows=m.map(it=>{
       const link=it[1];
       const note=it[3]?`<div class="note">📝 ${esc(it[3])}</div>`:'';
-      const nameTd=link?`<a href="${esc(link)}" download rel="noopener">${esc(it[0])}</a>${note}`:`<span>${esc(it[0])}</span>${note}`;
-      const stat=link?`<span class="ok">⬇️ 点击下载</span>`:`<span class="local">⚠️ 本地文件</span>`;
+      const nameTd=link?`<a href="${esc(link)}" target="_blank" rel="noopener">${esc(it[0])}</a>${note}`:`<span>${esc(it[0])}</span>${note}`;
+      const stat=link?`<a class="dl-btn" href="${esc(link)}" download rel="noopener">⬇️ 下载</a>`:`<span class="local">⚠️ 本地文件</span>`;
       return `<tr><td class="name">${nameTd}</td><td class="type">${esc(it[2]||'')}</td><td class="stat">${stat}</td></tr>`;
     }).join('');
     const card=document.createElement('div'); card.className='cat';
