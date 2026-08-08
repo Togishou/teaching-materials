@@ -1,0 +1,13 @@
+# 超过 GitHub 单文件 100MB 限制，排除在仓库外（页面标注为本地文件）
+files/日语-合格性考试模拟试题（2022年度）(1).pdf
+
+# Python 缓存
+__pycache__/
+*.pyc
+
+# 临时辅助文件（含令牌，切勿入库）
+gh_token.txt
+login.log
+login2.log
+poll_token.py
+measure.py

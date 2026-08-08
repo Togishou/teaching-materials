@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>日语高考教学资料 · 分类索引（可管理版）</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --ink:#1f2d3d; --sub:#6b7a8d;
+    --line:#e3e8ef; --accent:#2e75b6; --accent2:#1abc9c; --chip:#eef4fb;
+    --shadow:0 1px 3px rgba(16,38,76,.08),0 6px 18px rgba(16,38,76,.06);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  header{background:linear-gradient(135deg,#2e75b6,#1abc9c);color:#fff;padding:34px 20px 28px;text-align:center;}
+  header h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.5px;}
+  header p{margin:8px 0 0;opacity:.92;font-size:14px;}
+  .wrap{max-width:1040px;margin:0 auto;padding:20px 16px 60px;}
+  .controls{position:sticky;top:0;z-index:20;background:rgba(245,247,250,.92);backdrop-filter:blur(6px);
+            padding:14px 0 12px;margin-bottom:14px;border-bottom:1px solid var(--line);}
+  .search{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .search input{flex:1;min-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;
+                font-size:15px;outline:none;background:#fff;transition:.2s;}
+  .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,117,182,.12);}
+  .admin-btn{margin-left:auto;padding:10px 16px;border:none;border-radius:10px;background:var(--ink);
+             color:#fff;font-size:14px;cursor:pointer;white-space:nowrap;transition:.15s;}
+  .admin-btn:hover{background:#34465c;}
+  .count{font-size:13px;color:var(--sub);white-space:nowrap;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .chip{padding:6px 13px;border:1px solid var(--line);background:var(--chip);color:var(--accent);
+        border-radius:999px;font-size:13px;cursor:pointer;transition:.15s;user-select:none;}
+  .chip:hover{border-color:var(--accent);}
+  .chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .cat{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+       margin-bottom:18px;overflow:hidden;}
+  .cat-head{padding:16px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);
+            background:linear-gradient(180deg,#fbfdff,#f3f8fd);}
+  .cat-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+           font-size:20px;background:#eaf3fb;}
+  .cat-title{font-size:17px;font-weight:700;}
+  .cat-meta{margin-left:auto;font-size:13px;color:var(--sub);}
+  .cat-desc{padding:10px 18px 0;font-size:13px;color:var(--sub);}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{text-align:left;padding:9px 18px;border-top:1px solid var(--line);vertical-align:top;}
+  th{font-size:12px;color:var(--sub);font-weight:600;background:#fafcff;}
+  td.name{word-break:break-all;font-weight:500;}
+  td.name a{color:var(--accent);text-decoration:none;}
+  td.name a:hover{text-decoration:underline;}
+  td.type{white-space:nowrap;color:var(--sub);font-size:13px;}
+  td.stat{white-space:nowrap;font-size:13px;}
+  .note{font-size:12px;color:var(--sub);margin-top:3px;}
+  .ok{color:#1a9e6b;font-weight:600;}
+  .local{color:#c08a00;font-weight:600;}
+  tr:hover td{background:#f7fbff;}
+  .empty{text-align:center;color:var(--sub);padding:40px 0;font-size:15px;}
+  footer{text-align:center;color:var(--sub);font-size:12px;padding:24px;border-top:1px solid var(--line);}
+  .legend{font-size:12px;color:var(--sub);margin:2px 0 8px;}
+  .badge{display:inline-block;background:rgba(255,255,255,.2);border-radius:6px;padding:1px 8px;font-size:12px;margin-left:6px;}
+  @media(max-width:600px){
+    th.col-stat,td.stat{display:none;}
+    header h1{font-size:21px;}
+    .admin-btn{margin-left:0;}
+  }
+
+  /* ===== 管理后台 ===== */
+  .modal{position:fixed;inset:0;background:rgba(15,30,55,.55);display:none;align-items:center;justify-content:center;z-index:200;}
+  .modal.show{display:flex;}
+  .modal-box{background:#fff;border-radius:14px;padding:26px 24px;width:340px;max-width:90vw;box-shadow:var(--shadow);}
+  .modal-box h3{margin:0 0 14px;font-size:18px;}
+  .modal-box input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;outline:none;}
+  .modal-box input:focus{border-color:var(--accent);}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+  .modal-actions button{padding:9px 16px;border:1px solid var(--line);background:#fff;border-radius:9px;cursor:pointer;font-size:14px;}
+  .modal-actions button.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .err{color:#d64545;font-size:13px;margin-top:10px;min-height:18px;}
+
+  .admin{position:fixed;inset:0;background:#eef1f6;display:none;flex-direction:column;z-index:300;}
+  .admin.show{display:flex;}
+  .admin-bar{display:flex;align-items:center;gap:10px;padding:12px 18px;background:#1f2d3d;color:#fff;flex-wrap:wrap;}
+  .admin-bar strong{font-size:15px;}
+  .admin-bar .hint{font-size:12px;opacity:.8;}
+  .admin-bar .spacer{flex:1;}
+  .admin-bar button{padding:8px 13px;border:none;border-radius:8px;font-size:13px;cursor:pointer;background:#3a4d63;color:#fff;}
+  .admin-bar button:hover{background:#4a5f78;}
+  .admin-bar button.primary{background:var(--accent2);}
+  .admin-bar button.danger{background:#c0504d;}
+  .admin-body{flex:1;overflow:auto;padding:18px;max-width:1100px;margin:0 auto;width:100%;}
+  .a-cat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:16px;box-shadow:var(--shadow);}
+  .a-cat-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .a-cat-head input.icon{width:54px;text-align:center;font-size:20px;}
+  .a-cat-head input.name{flex:1;min-width:200px;font-weight:700;font-size:15px;}
+  .a-cat .desc-in{width:100%;margin-top:10px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+  .a-cat .row-in{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:7px;font-size:13px;}
+  .a-tbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
+  .a-tbl th{background:#f3f6fb;font-size:12px;color:var(--sub);text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);}
+  .a-tbl td{padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .a-tbl .f-name{width:26%;}
+  .a-tbl .f-link{width:30%;}
+  .a-tbl .f-size{width:14%;}
+  .a-tbl .f-note{width:24%;}
+  .a-tbl .f-del{width:36px;text-align:center;}
+  .a-tbl .del{border:none;background:#fdeaea;color:#c0504d;border-radius:6px;cursor:pointer;padding:4px 8px;font-size:13px;}
+  .a-tbl .del:hover{background:#f6c9c9;}
+  .mini{margin-top:10px;padding:7px 12px;border:1px dashed var(--line);background:#fafcff;border-radius:8px;
+        cursor:pointer;font-size:13px;color:var(--accent);}
+  .mini:hover{background:#eef4fb;}
+  .add-cat{margin:0 auto 30px;display:block;padding:12px 22px;border:2px dashed var(--accent);background:#fff;
+           color:var(--accent);border-radius:12px;cursor:pointer;font-size:14px;}
+  .add-cat:hover{background:#eef4fb;}
+
+  .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);background:#1f2d3d;color:#fff;
+         padding:11px 20px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:400;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<header>
+  <h1>日语高考教学资料 · 分类索引</h1>
+  <p>12 大类 · 可在线浏览与点击打开（教材/课件为本地文件）</p>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div class="search">
+      <input id="q" type="text" placeholder="搜索文件名、备注、分类…（如 听力 / 敬语 / 真题）" />
+      <span class="count" id="count"></span>
+      <button class="admin-btn" onclick="openAdmin()">⚙ 管理后台</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div id="list"></div>
+  <footer>本页为教学资料索引 · 由 WorkBuddy 生成并部署 · 管理改动仅存于本浏览器，导出配置可交管理员永久发布</footer>
+</div>
+
+<!-- 口令弹窗 -->
+<div class="modal" id="pwdModal">
+  <div class="modal-box">
+    <h3>🔐 管理后台口令</h3>
+    <input id="pwdInput" type="password" placeholder="请输入口令" onkeydown="if(event.key==='Enter')checkPwd()" />
+    <div class="err" id="pwdErr"></div>
+    <div class="modal-actions">
+      <button onclick="closePwd()">取消</button>
+      <button class="primary" onclick="checkPwd()">进入</button>
+    </div>
+  </div>
+</div>
+
+<!-- 管理后台面板 -->
+<div class="admin" id="adminPanel">
+  <div class="admin-bar">
+    <strong>🛠 内容管理后台</strong>
+    <span class="hint">改动即时存本浏览器；点「导出配置」下载后交管理员重新部署，即全网生效</span>
+    <span class="spacer"></span>
+    <button class="primary" onclick="saveData()">💾 保存</button>
+    <button onclick="exportData()">⬇ 导出配置</button>
+    <button onclick="document.getElementById('importFile').click()">⬆ 导入配置</button>
+    <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(this)" />
+    <button onclick="resetData()">↺ 恢复默认</button>
+    <button class="danger" onclick="closeAdmin()">关闭</button>
+  </div>
+  <div class="admin-body" id="adminBody"></div>
+  <button class="add-cat" onclick="addCat()">＋ 新增分类</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DEFAULT_DATA = __DATA__;
+const PWD = "__PWD__";
+const LS_KEY = "teach_data_v3";
+
+let DATA = loadData();
+let activeCat = null;
+
+function loadData(){
+  try{ const s = localStorage.getItem(LS_KEY); if(s) return JSON.parse(s); }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function saveData(){
+  localStorage.setItem(LS_KEY, JSON.stringify(DATA));
+  render();
+  toast("✅ 已保存到本浏览器");
+}
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+/* ===== 前台渲染 ===== */
+const qEl=document.getElementById('q'), listEl=document.getElementById('list'), countEl=document.getElementById('count');
+const chipsEl=document.getElementById('chips');
+
+function buildChips(){
+  chipsEl.innerHTML='';
+  const all=document.createElement('div'); all.className='chip'; all.textContent='全部'; all.dataset.id='';
+  all.onclick=()=>{activeCat=null;syncChips();render();}; chipsEl.appendChild(all);
+  DATA.forEach(c=>{const el=document.createElement('div');el.className='chip';el.textContent=c.name.replace(/^[^、]*[、]/,'');
+    el.dataset.id=c.id; el.onclick=()=>{activeCat=c.id;syncChips();render();}; chipsEl.appendChild(el);});
+}
+function syncChips(){[...chipsEl.children].forEach((el,i)=>{
+  if(i===0)el.classList.toggle('active',activeCat===null);
+  else el.classList.toggle('active',el.dataset.id===activeCat);});}
+
+function render(){
+  const q=qEl.value.trim().toLowerCase();
+  listEl.innerHTML=''; let sc=0,si=0;
+  DATA.forEach(c=>{
+    if(activeCat&&c.id!==activeCat)return;
+    const m=c.items.filter(it=>!q||(it[0]||'').toLowerCase().includes(q)||(it[3]||'').toLowerCase().includes(q));
+    if(q&&m.length===0)return; sc++; si+=m.length;
+    const rows=m.map(it=>{
+      const link=it[1];
+      const note=it[3]?`<div class="note">📝 ${esc(it[3])}</div>`:'';
+      const nameTd=link?`<a href="${esc(link)}" target="_blank" rel="noopener">${esc(it[0])}</a>${note}`:`<span>${esc(it[0])}</span>${note}`;
+      const stat=link?`<span class="ok">✅ 可打开</span>`:`<span class="local">⚠️ 本地文件</span>`;
+      return `<tr><td class="name">${nameTd}</td><td class="type">${esc(it[2]||'')}</td><td class="stat">${stat}</td></tr>`;
+    }).join('');
+    const card=document.createElement('div'); card.className='cat';
+    card.innerHTML=`<div class="cat-head"><div class="cat-ico">${c.icon}</div>
+      <div class="cat-title">${esc(c.name)}</div><div class="cat-meta">${m.length} 项</div></div>
+      <div class="cat-desc">${esc(c.desc)}</div>
+      <table><thead><tr><th>文件 / 目录</th><th>大小 / 数量</th><th class="col-stat">状态</th></tr></thead>
+      <tbody>${rows}</tbody></table>`;
+    listEl.appendChild(card);
+  });
+  if(sc===0)listEl.innerHTML='<div class="empty">没有匹配「'+esc(q)+'」的资料</div>';
+  countEl.textContent=`显示 ${sc} 类 / ${si} 项`;
+}
+
+/* ===== 管理后台 ===== */
+function openAdmin(){ document.getElementById('pwdModal').classList.add('show'); document.getElementById('pwdInput').value=''; document.getElementById('pwdInput').focus(); }
+function closePwd(){ document.getElementById('pwdModal').classList.remove('show'); }
+function checkPwd(){
+  const v=document.getElementById('pwdInput').value;
+  if(v===PWD){ document.getElementById('pwdModal').classList.remove('show'); document.getElementById('adminPanel').classList.add('show'); buildAdmin(); }
+  else { document.getElementById('pwdErr').textContent='口令错误，请重试'; }
+}
+function closeAdmin(){ document.getElementById('adminPanel').classList.remove('show'); }
+
+function buildAdmin(){
+  const body=document.getElementById('adminBody'); body.innerHTML='';
+  DATA.forEach((c,ci)=>{
+    const box=document.createElement('div'); box.className='a-cat';
+    let rows=c.items.map((it,ji)=>`
+      <tr>
+        <td class="f-name"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="0" value="${esc(it[0]||'')}"></td>
+        <td class="f-link"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="1" placeholder="留空=本地文件" value="${esc(it[1]||'')}"></td>
+        <td class="f-size"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="2" value="${esc(it[2]||'')}"></td>
+        <td class="f-note"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="3" value="${esc(it[3]||'')}"></td>
+        <td class="f-del"><button class="del" onclick="delItem(${ci},${ji})">✕</button></td>
+      </tr>`).join('');
+    box.innerHTML=`
+      <div class="a-cat-head">
+        <input class="row-in icon" data-cat="${ci}" data-f="icon" value="${esc(c.icon||'')}">
+        <input class="row-in name" data-cat="${ci}" data-f="name" value="${esc(c.name||'')}">
+        <button class="del" onclick="delCat(${ci})">删除分类</button>
+      </div>
+      <input class="desc-in" data-cat="${ci}" data-f="desc" value="${esc(c.desc||'')}" placeholder="分类说明">
+      <table class="a-tbl"><thead><tr><th class="f-name">名称</th><th class="f-link">链接 / 本地（留空为本地）</th><th class="f-size">大小/类型</th><th class="f-note">备注</th><th></th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <div class="mini" onclick="addItem(${ci})">＋ 新增条目</div>`;
+    body.appendChild(box);
+  });
+}
+document.getElementById('adminBody').addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.cat==null)return;
+  const ci=+t.dataset.cat;
+  if(t.dataset.item!=null){ DATA[ci].items[+t.dataset.item][t.dataset.f]=t.value; }
+  else { DATA[ci][t.dataset.f]=t.value; }
+});
+function delCat(ci){ DATA.splice(ci,1); buildAdmin(); render(); }
+function delItem(ci,ji){ DATA[ci].items.splice(ji,1); buildAdmin(); render(); }
+function addCat(){ DATA.push({id:'cat'+Date.now(),icon:'📁',name:'新分类',desc:'',upload:false,items:[['新文件','','','']]}); buildAdmin(); render(); }
+function addItem(ci){ DATA[ci].items.push(['新文件','','','']); buildAdmin(); render(); }
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='site_data.json'; a.click();
+  toast('⬇ 已导出 site_data.json');
+}
+function importData(input){
+  const f=input.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ const d=JSON.parse(r.result); if(!Array.isArray(d))throw 0; DATA=d; localStorage.setItem(LS_KEY,JSON.stringify(DATA)); buildAdmin(); render(); toast('⬆ 已导入配置'); }
+    catch(e){ alert('配置文件格式不正确'); } };
+  r.readAsText(f); input.value='';
+}
+function resetData(){
+  if(!confirm('确定恢复为默认内容？本浏览器中的改动将丢失。'))return;
+  localStorage.removeItem(LS_KEY); DATA=loadData(); buildAdmin(); render(); toast('↺ 已恢复默认');
+}
+
+/* 初始化 */
+buildChips(); render();
+qEl.addEventListener('input',render);
+</script>
+</body>
+</html>

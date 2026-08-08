@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>日语高考教学资料 · 分类索引（可管理版）</title>
+<style>
+  :root{
+    --bg:#f5f7fa; --card:#ffffff; --ink:#1f2d3d; --sub:#6b7a8d;
+    --line:#e3e8ef; --accent:#2e75b6; --accent2:#1abc9c; --chip:#eef4fb;
+    --shadow:0 1px 3px rgba(16,38,76,.08),0 6px 18px rgba(16,38,76,.06);
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+       background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased;}
+  header{background:linear-gradient(135deg,#2e75b6,#1abc9c);color:#fff;padding:34px 20px 28px;text-align:center;}
+  header h1{margin:0;font-size:26px;font-weight:700;letter-spacing:.5px;}
+  header p{margin:8px 0 0;opacity:.92;font-size:14px;}
+  .wrap{max-width:1040px;margin:0 auto;padding:20px 16px 60px;}
+  .controls{position:sticky;top:0;z-index:20;background:rgba(245,247,250,.92);backdrop-filter:blur(6px);
+            padding:14px 0 12px;margin-bottom:14px;border-bottom:1px solid var(--line);}
+  .search{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .search input{flex:1;min-width:220px;padding:11px 14px;border:1px solid var(--line);border-radius:10px;
+                font-size:15px;outline:none;background:#fff;transition:.2s;}
+  .search input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(46,117,182,.12);}
+  .admin-btn{margin-left:auto;padding:10px 16px;border:none;border-radius:10px;background:var(--ink);
+             color:#fff;font-size:14px;cursor:pointer;white-space:nowrap;transition:.15s;}
+  .admin-btn:hover{background:#34465c;}
+  .count{font-size:13px;color:var(--sub);white-space:nowrap;}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+  .chip{padding:6px 13px;border:1px solid var(--line);background:var(--chip);color:var(--accent);
+        border-radius:999px;font-size:13px;cursor:pointer;transition:.15s;user-select:none;}
+  .chip:hover{border-color:var(--accent);}
+  .chip.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .cat{background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);
+       margin-bottom:18px;overflow:hidden;}
+  .cat-head{padding:16px 18px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);
+            background:linear-gradient(180deg,#fbfdff,#f3f8fd);}
+  .cat-ico{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;
+           font-size:20px;background:#eaf3fb;}
+  .cat-title{font-size:17px;font-weight:700;}
+  .cat-meta{margin-left:auto;font-size:13px;color:var(--sub);}
+  .cat-desc{padding:10px 18px 0;font-size:13px;color:var(--sub);}
+  table{width:100%;border-collapse:collapse;font-size:14px;}
+  th,td{text-align:left;padding:9px 18px;border-top:1px solid var(--line);vertical-align:top;}
+  th{font-size:12px;color:var(--sub);font-weight:600;background:#fafcff;}
+  td.name{word-break:break-all;font-weight:500;}
+  td.name a{color:var(--accent);text-decoration:none;}
+  td.name a:hover{text-decoration:underline;}
+  td.type{white-space:nowrap;color:var(--sub);font-size:13px;}
+  td.stat{white-space:nowrap;font-size:13px;}
+  .note{font-size:12px;color:var(--sub);margin-top:3px;}
+  .ok{color:#1a9e6b;font-weight:600;}
+  .local{color:#c08a00;font-weight:600;}
+  tr:hover td{background:#f7fbff;}
+  .empty{text-align:center;color:var(--sub);padding:40px 0;font-size:15px;}
+  footer{text-align:center;color:var(--sub);font-size:12px;padding:24px;border-top:1px solid var(--line);}
+  .legend{font-size:12px;color:var(--sub);margin:2px 0 8px;}
+  .badge{display:inline-block;background:rgba(255,255,255,.2);border-radius:6px;padding:1px 8px;font-size:12px;margin-left:6px;}
+  @media(max-width:600px){
+    th.col-stat,td.stat{display:none;}
+    header h1{font-size:21px;}
+    .admin-btn{margin-left:0;}
+  }
+
+  /* ===== 管理后台 ===== */
+  .modal{position:fixed;inset:0;background:rgba(15,30,55,.55);display:none;align-items:center;justify-content:center;z-index:200;}
+  .modal.show{display:flex;}
+  .modal-box{background:#fff;border-radius:14px;padding:26px 24px;width:340px;max-width:90vw;box-shadow:var(--shadow);}
+  .modal-box h3{margin:0 0 14px;font-size:18px;}
+  .modal-box input{width:100%;padding:11px 13px;border:1px solid var(--line);border-radius:9px;font-size:15px;outline:none;}
+  .modal-box input:focus{border-color:var(--accent);}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;}
+  .modal-actions button{padding:9px 16px;border:1px solid var(--line);background:#fff;border-radius:9px;cursor:pointer;font-size:14px;}
+  .modal-actions button.primary{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .err{color:#d64545;font-size:13px;margin-top:10px;min-height:18px;}
+
+  .admin{position:fixed;inset:0;background:#eef1f6;display:none;flex-direction:column;z-index:300;}
+  .admin.show{display:flex;}
+  .admin-bar{display:flex;align-items:center;gap:10px;padding:12px 18px;background:#1f2d3d;color:#fff;flex-wrap:wrap;}
+  .admin-bar strong{font-size:15px;}
+  .admin-bar .hint{font-size:12px;opacity:.8;}
+  .admin-bar .spacer{flex:1;}
+  .admin-bar button{padding:8px 13px;border:none;border-radius:8px;font-size:13px;cursor:pointer;background:#3a4d63;color:#fff;}
+  .admin-bar button:hover{background:#4a5f78;}
+  .admin-bar button.primary{background:var(--accent2);}
+  .admin-bar button.danger{background:#c0504d;}
+  .admin-body{flex:1;overflow:auto;padding:18px;max-width:1100px;margin:0 auto;width:100%;}
+  .a-cat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:16px;box-shadow:var(--shadow);}
+  .a-cat-head{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+  .a-cat-head input.icon{width:54px;text-align:center;font-size:20px;}
+  .a-cat-head input.name{flex:1;min-width:200px;font-weight:700;font-size:15px;}
+  .a-cat .desc-in{width:100%;margin-top:10px;padding:8px 11px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+  .a-cat .row-in{width:100%;padding:7px 10px;border:1px solid var(--line);border-radius:7px;font-size:13px;}
+  .a-tbl{width:100%;border-collapse:collapse;margin-top:12px;font-size:13px;}
+  .a-tbl th{background:#f3f6fb;font-size:12px;color:var(--sub);text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);}
+  .a-tbl td{padding:6px 6px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .a-tbl .f-name{width:26%;}
+  .a-tbl .f-link{width:30%;}
+  .a-tbl .f-size{width:14%;}
+  .a-tbl .f-note{width:24%;}
+  .a-tbl .f-del{width:36px;text-align:center;}
+  .a-tbl .del{border:none;background:#fdeaea;color:#c0504d;border-radius:6px;cursor:pointer;padding:4px 8px;font-size:13px;}
+  .a-tbl .del:hover{background:#f6c9c9;}
+  .mini{margin-top:10px;padding:7px 12px;border:1px dashed var(--line);background:#fafcff;border-radius:8px;
+        cursor:pointer;font-size:13px;color:var(--accent);}
+  .mini:hover{background:#eef4fb;}
+  .add-cat{margin:0 auto 30px;display:block;padding:12px 22px;border:2px dashed var(--accent);background:#fff;
+           color:var(--accent);border-radius:12px;cursor:pointer;font-size:14px;}
+  .add-cat:hover{background:#eef4fb;}
+
+  .toast{position:fixed;left:50%;bottom:34px;transform:translateX(-50%) translateY(20px);background:#1f2d3d;color:#fff;
+         padding:11px 20px;border-radius:10px;font-size:14px;opacity:0;pointer-events:none;transition:.25s;z-index:400;}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+</style>
+</head>
+<body>
+<header>
+  <h1>日语高考教学资料 · 分类索引</h1>
+  <p>12 大类 · 可在线浏览与点击打开（教材/课件为本地文件）</p>
+</header>
+
+<div class="wrap">
+  <div class="controls">
+    <div class="search">
+      <input id="q" type="text" placeholder="搜索文件名、备注、分类…（如 听力 / 敬语 / 真题）" />
+      <span class="count" id="count"></span>
+      <button class="admin-btn" onclick="openAdmin()">⚙ 管理后台</button>
+    </div>
+    <div class="chips" id="chips"></div>
+  </div>
+  <div id="list"></div>
+  <footer>本页为教学资料索引 · 由 WorkBuddy 生成并部署 · 管理改动仅存于本浏览器，导出配置可交管理员永久发布</footer>
+</div>
+
+<!-- 口令弹窗 -->
+<div class="modal" id="pwdModal">
+  <div class="modal-box">
+    <h3>🔐 管理后台口令</h3>
+    <input id="pwdInput" type="password" placeholder="请输入口令" onkeydown="if(event.key==='Enter')checkPwd()" />
+    <div class="err" id="pwdErr"></div>
+    <div class="modal-actions">
+      <button onclick="closePwd()">取消</button>
+      <button class="primary" onclick="checkPwd()">进入</button>
+    </div>
+  </div>
+</div>
+
+<!-- 管理后台面板 -->
+<div class="admin" id="adminPanel">
+  <div class="admin-bar">
+    <strong>🛠 内容管理后台</strong>
+    <span class="hint">改动即时存本浏览器；点「导出配置」下载后交管理员重新部署，即全网生效</span>
+    <span class="spacer"></span>
+    <button class="primary" onclick="saveData()">💾 保存</button>
+    <button onclick="exportData()">⬇ 导出配置</button>
+    <button onclick="document.getElementById('importFile').click()">⬆ 导入配置</button>
+    <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(this)" />
+    <button onclick="resetData()">↺ 恢复默认</button>
+    <button class="danger" onclick="closeAdmin()">关闭</button>
+  </div>
+  <div class="admin-body" id="adminBody"></div>
+  <button class="add-cat" onclick="addCat()">＋ 新增分类</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const DEFAULT_DATA = [{"id": "audio", "icon": "🎧", "name": "一、听力音频", "desc": "高考日语听力训练相关音频、原文与印刷稿。音频文件过大未上传，仅上传文档部分（PDF/说明）。", "upload": true, "items": [["11篇模板范文.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E4%BD%9C%E6%96%87/11%E7%AF%87%E6%A8%A1%E6%9D%BF%E8%8C%83%E6%96%87.pdf", "199 KB", "三轮答案音频原文\\日语学习资料\\作文\\11篇模板范文.pdf"], ["1~8課文法復習_修正版（人教版用）.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/1~8%E8%AA%B2%E6%96%87%E6%B3%95%E5%BE%A9%E7%BF%92_%E4%BF%AE%E6%AD%A3%E7%89%88%EF%BC%88%E4%BA%BA%E6%95%99%E7%89%88%E7%94%A8%EF%BC%89.pdf", "373 KB", "三轮答案音频原文\\日语学习资料\\1~8課文法復習_修正版（人教版用）.pdf"], ["2022届三模听力录音稿.doc", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/2022%E5%B1%8A%E4%B8%89%E6%A8%A1%E5%90%AC%E5%8A%9B%E5%BD%95%E9%9F%B3%E7%A8%BF.doc", "378 KB", "三轮答案音频原文\\2022届三模听力录音稿.doc"], ["2022年4月一模(无锡卷）.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/22%E6%97%A0%E9%94%A1%E4%B8%80%E6%A8%A1/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%28%E6%97%A0%E9%94%A1%E5%8D%B7%EF%BC%89.docx", "36 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\22无锡一模\\2022年4月一模(无锡卷）.docx"], ["2022年4月一模（苏州卷） (1).jpg", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89%20%281%29.jpg", "6.4 MB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\2022年4月一模（苏州卷） (1).jpg"], ["2022年4月一模（苏州卷） (2).jpg", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89%20%282%29.jpg", "3.8 MB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\2022年4月一模（苏州卷） (2).jpg"], ["2022年4月一模（苏州卷） (3).jpg", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89%20%283%29.jpg", "6.2 MB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\2022年4月一模（苏州卷） (3).jpg"], ["2022年4月一模（苏州卷） (4).jpg", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89%20%284%29.jpg", "5.6 MB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\2022年4月一模（苏州卷） (4).jpg"], ["2022年4月一模（苏州卷） (5).jpg", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89%20%285%29.jpg", "6.7 MB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\2022年4月一模（苏州卷） (5).jpg"], ["2022年4月一模（苏州卷） (6).jpg", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89%20%286%29.jpg", "6.0 MB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\2022年4月一模（苏州卷） (6).jpg"], ["2022年4月一模（苏州卷）.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89.docx", "44 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\2022年4月一模（苏州卷）.docx"], ["Ss三轮答案.doc", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/Ss%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88.doc", "212 KB", "三轮答案音频原文\\Ss三轮答案.doc"], ["ように.jpg", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E3%82%88%E3%81%86%E3%81%AB.jpg", "32 KB", "三轮答案音频原文\\日语学习资料\\ように.jpg"], ["专项练习_敬語（不規則動詞）.doc", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E4%B8%93%E9%A1%B9%E7%BB%83%E4%B9%A0_%E6%95%AC%E8%AA%9E%EF%BC%88%E4%B8%8D%E8%A6%8F%E5%89%87%E5%8B%95%E8%A9%9E%EF%BC%89.doc", "62 KB", "三轮答案音频原文\\日语学习资料\\专项练习_敬語（不規則動詞）.doc"], ["书信万能句.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E4%B9%A6%E4%BF%A1%E4%B8%87%E8%83%BD%E5%8F%A5.pdf", "63 KB", "三轮答案音频原文\\日语学习资料\\书信万能句.pdf"], ["仮定の区別.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E4%BB%AE%E5%AE%9A%E3%81%AE%E5%8C%BA%E5%88%A5.pdf", "79 KB", "三轮答案音频原文\\日语学习资料\\仮定の区別.pdf"], ["伝聞・様態（人教版用）.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E4%BC%9D%E8%81%9E%E3%83%BB%E6%A7%98%E6%85%8B%EF%BC%88%E4%BA%BA%E6%95%99%E7%89%88%E7%94%A8%EF%BC%89.pdf", "85 KB", "三轮答案音频原文\\日语学习资料\\伝聞・様態（人教版用）.pdf"], ["使用说明.docx", "files/562858041%20%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E7%BB%BF%E5%AE%9D%E4%B9%A6.%E5%90%AC%E5%8A%9B/%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E.docx", "114 KB", "562858041 高考日语绿宝书.听力\\使用说明.docx"], ["初级听力（教师用）(1).pdf", "files/%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E5%88%9D%E7%BA%A7%E5%90%AC%E5%8A%9B/%E5%88%9D%E7%BA%A7%E5%90%AC%E5%8A%9B%EF%BC%88%E6%95%99%E5%B8%88%E7%94%A8%EF%BC%89%281%29.pdf", "32.6 MB", "高考日语初级听力\\初级听力（教师用）(1).pdf"], ["动词活用变形练习.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E5%8A%A8%E8%AF%8D%E6%B4%BB%E7%94%A8%E5%8F%98%E5%BD%A2%E7%BB%83%E4%B9%A0.pdf", "61 KB", "三轮答案音频原文\\日语学习资料\\动词活用变形练习.pdf"], ["听力原文-日语统一测试卷A.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7/%E5%90%AC%E5%8A%9B%E5%8E%9F%E6%96%87-%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7A.docx", "20 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\统一测试卷\\听力原文-日语统一测试卷A.docx"], ["听力原文及答案.pdf", "files/%E5%90%AC%E5%8A%9B%E5%8E%9F%E6%96%87%E5%8F%8A%E7%AD%94%E6%A1%88.pdf", "3.7 MB", "听力原文及答案.pdf"], ["图表万能句.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E5%9B%BE%E8%A1%A8%E4%B8%87%E8%83%BD%E5%8F%A5.pdf", "284 KB", "三轮答案音频原文\\日语学习资料\\图表万能句.pdf"], ["广外试卷.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E5%B9%BF%E5%A4%96%E8%AF%95%E5%8D%B7/%E5%B9%BF%E5%A4%96%E8%AF%95%E5%8D%B7.pdf", "4.4 MB", "三轮答案音频原文\\日语学习资料\\模拟卷\\广外试卷\\广外试卷.pdf"], ["日语统一测试卷（三模）.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E4%B8%89%E6%A8%A1%E5%8D%B7/%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7%EF%BC%88%E4%B8%89%E6%A8%A1%EF%BC%89.pdf", "87 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\三模卷\\日语统一测试卷（三模）.pdf"], ["無錫2022年4月一模試巻（堂練版）.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/22%E6%97%A0%E9%94%A1%E4%B8%80%E6%A8%A1/%E7%84%A1%E9%8C%AB2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%E8%A9%A6%E5%B7%BB%EF%BC%88%E5%A0%82%E7%B7%B4%E7%89%88%EF%BC%89.pdf", "84 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\22无锡一模\\無錫2022年4月一模試巻（堂練版）.pdf"], ["疑问词+か.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E7%96%91%E9%97%AE%E8%AF%8D%2B%E3%81%8B.docx", "12 KB", "三轮答案音频原文\\日语学习资料\\疑问词+か.docx"], ["答案 2022年4月一模（苏州卷）.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/2022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89/%E7%AD%94%E6%A1%88%202022%E5%B9%B44%E6%9C%88%E4%B8%80%E6%A8%A1%EF%BC%88%E8%8B%8F%E5%B7%9E%E5%8D%B7%EF%BC%89.docx", "14 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\2022年4月一模（苏州卷）\\答案 2022年4月一模（苏州卷）.docx"], ["答案 日语统一测试卷A.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7/%E7%AD%94%E6%A1%88%20%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7A.docx", "46 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\统一测试卷\\答案 日语统一测试卷A.docx"], ["答案 日语统一测试卷H.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E4%B8%89%E6%A8%A1%E5%8D%B7/%E7%AD%94%E6%A1%88%20%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7H.docx", "25 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\三模卷\\答案 日语统一测试卷H.docx"], ["答题卡 日语统一测试卷A.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7/%E7%AD%94%E9%A2%98%E5%8D%A1%20%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7A.docx", "31 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\统一测试卷\\答题卡 日语统一测试卷A.docx"], ["议论文万能句.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E8%AE%AE%E8%AE%BA%E6%96%87%E4%B8%87%E8%83%BD%E5%8F%A5.pdf", "94 KB", "三轮答案音频原文\\日语学习资料\\议论文万能句.pdf"], ["试卷 日语统一测试卷A.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7/%E8%AF%95%E5%8D%B7%20%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7A.docx", "38 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\统一测试卷\\试卷 日语统一测试卷A.docx"], ["试卷 日语统一测试卷A.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7/%E8%AF%95%E5%8D%B7%20%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7A.pdf", "225 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\统一测试卷\\试卷 日语统一测试卷A.pdf"], ["试卷 日语统一测试卷H.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E6%A8%A1%E6%8B%9F%E5%8D%B7/%E4%B8%89%E6%A8%A1%E5%8D%B7/%E8%AF%95%E5%8D%B7%20%E6%97%A5%E8%AF%AD%E7%BB%9F%E4%B8%80%E6%B5%8B%E8%AF%95%E5%8D%B7H.docx", "35 KB", "三轮答案音频原文\\日语学习资料\\模拟卷\\三模卷\\试卷 日语统一测试卷H.docx"], ["语法专项练习一（敬语）(2).pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E8%80%83%E5%89%8D%E8%AF%AD%E6%B3%95%E7%BB%83%E4%B9%A0/%E8%AF%AD%E6%B3%95%E4%B8%93%E9%A1%B9%E7%BB%83%E4%B9%A0%E4%B8%80%EF%BC%88%E6%95%AC%E8%AF%AD%EF%BC%89%282%29.pdf", "139 KB", "三轮答案音频原文\\日语学习资料\\考前语法练习\\语法专项练习一（敬语）(2).pdf"], ["语法专项练习三（文法）.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E8%AF%AD%E6%B3%95%E4%B8%93%E9%A1%B9%E7%BB%83%E4%B9%A0%E4%B8%89%EF%BC%88%E6%96%87%E6%B3%95%EF%BC%89.pdf", "146 KB", "三轮答案音频原文\\日语学习资料\\语法专项练习三（文法）.pdf"], ["语法专项练习二（态）.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E8%80%83%E5%89%8D%E8%AF%AD%E6%B3%95%E7%BB%83%E4%B9%A0/%E8%AF%AD%E6%B3%95%E4%B8%93%E9%A1%B9%E7%BB%83%E4%B9%A0%E4%BA%8C%EF%BC%88%E6%80%81%EF%BC%89.pdf", "135 KB", "三轮答案音频原文\\日语学习资料\\考前语法练习\\语法专项练习二（态）.pdf"], ["语法综合练习一.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E8%80%83%E5%89%8D%E8%AF%AD%E6%B3%95%E7%BB%83%E4%B9%A0/%E8%AF%AD%E6%B3%95%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0%E4%B8%80.pdf", "133 KB", "三轮答案音频原文\\日语学习资料\\考前语法练习\\语法综合练习一.pdf"], ["语法综合练习（三）(1).pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E8%80%83%E5%89%8D%E8%AF%AD%E6%B3%95%E7%BB%83%E4%B9%A0/%E8%AF%AD%E6%B3%95%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0%EF%BC%88%E4%B8%89%EF%BC%89%281%29.pdf", "140 KB", "三轮答案音频原文\\日语学习资料\\考前语法练习\\语法综合练习（三）(1).pdf"], ["语法综合训练二.pdf", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E8%80%83%E5%89%8D%E8%AF%AD%E6%B3%95%E7%BB%83%E4%B9%A0/%E8%AF%AD%E6%B3%95%E7%BB%BC%E5%90%88%E8%AE%AD%E7%BB%83%E4%BA%8C.pdf", "138 KB", "三轮答案音频原文\\日语学习资料\\考前语法练习\\语法综合训练二.pdf"], ["高考日语作文模块练习.docx", "files/%E4%B8%89%E8%BD%AE%E7%AD%94%E6%A1%88%E9%9F%B3%E9%A2%91%E5%8E%9F%E6%96%87/%E6%97%A5%E8%AF%AD%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%96%99/%E4%BD%9C%E6%96%87/%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E4%BD%9C%E6%96%87%E6%A8%A1%E5%9D%97%E7%BB%83%E4%B9%A0.docx", "65 KB", "三轮答案音频原文\\日语学习资料\\作文\\高考日语作文模块练习.docx"], ["高考日语绿宝书（听力）.pdf", "files/562858041%20%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E7%BB%BF%E5%AE%9D%E4%B9%A6.%E5%90%AC%E5%8A%9B/%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E7%BB%BF%E5%AE%9D%E4%B9%A6%EF%BC%88%E5%90%AC%E5%8A%9B%EF%BC%89.pdf", "41.1 MB", "562858041 高考日语绿宝书.听力\\高考日语绿宝书（听力）.pdf"], ["高考日语绿宝书（听力）基础巩固印刷用.pdf", "files/%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E7%BB%BF%E5%AE%9D%E4%B9%A6%EF%BC%88%E5%90%AC%E5%8A%9B%EF%BC%89%E5%9F%BA%E7%A1%80%E5%B7%A9%E5%9B%BA%E5%8D%B0%E5%88%B7%E7%94%A8.pdf", "8.1 MB", "高考日语绿宝书（听力）基础巩固印刷用.pdf"], ["（题目）日本语初级听力.pdf", "files/%E5%88%9D%E7%BA%A7%E5%90%AC%E5%8A%9B%E9%9F%B3%E9%A2%91/%EF%BC%88%E9%A2%98%E7%9B%AE%EF%BC%89%E6%97%A5%E6%9C%AC%E8%AF%AD%E5%88%9D%E7%BA%A7%E5%90%AC%E5%8A%9B.pdf", "427 KB", "初级听力音频\\（题目）日本语初级听力.pdf"]]}, {"id": "ppt", "icon": "📊", "name": "二、课件 PPT", "desc": "各年级教学 PPT 课件及配套素材（体积过大，未上传云端，以下为本地文件）。", "upload": false, "items": [["ppt课件/", null, "4 个", ""], ["原ppt课件/", null, "52 个", ""], ["PPT素材/", null, "27 个", ""], ["听力.pptx", null, "1 个", ""]]}, {"id": "essay", "icon": "✍️", "name": "三、作文", "desc": "高考日语作文范文、模板、万能句与写作格式资料。", "upload": true, "items": [["11篇模板范文.pdf", "files/11%E7%AF%87%E6%A8%A1%E6%9D%BF%E8%8C%83%E6%96%87.pdf", "199 KB", "11篇模板范文.pdf"], ["11篇范文-高考日语作文模块练习.pdf", "files/11%E7%AF%87%E8%8C%83%E6%96%87-%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E4%BD%9C%E6%96%87%E6%A8%A1%E5%9D%97%E7%BB%83%E4%B9%A0.pdf", "199 KB", "11篇范文-高考日语作文模块练习.pdf"], ["2022年时事热点相关作文.pdf", "files/2022%E5%B9%B4%E6%97%B6%E4%BA%8B%E7%83%AD%E7%82%B9%E7%9B%B8%E5%85%B3%E4%BD%9C%E6%96%87.pdf", "108 KB", "2022年时事热点相关作文.pdf"], ["●高考作文-2021年7月更新.pdf", "files/%E2%97%8F%E9%AB%98%E8%80%83%E4%BD%9C%E6%96%87-2021%E5%B9%B47%E6%9C%88%E6%9B%B4%E6%96%B0.pdf", "288 KB", "●高考作文-2021年7月更新.pdf"], ["书信万能句.pdf", "files/%E4%B9%A6%E4%BF%A1%E4%B8%87%E8%83%BD%E5%8F%A5.pdf", "63 KB", "书信万能句.pdf"], ["作文写作稿纸.docx", "files/%E4%BD%9C%E6%96%87%E5%86%99%E4%BD%9C%E7%A8%BF%E7%BA%B8.docx", "20 KB", "作文写作稿纸.docx"], ["关于日语作文书信格式.pdf", "files/%E5%85%B3%E4%BA%8E%E6%97%A5%E8%AF%AD%E4%BD%9C%E6%96%87%E4%B9%A6%E4%BF%A1%E6%A0%BC%E5%BC%8F.pdf", "115 KB", "关于日语作文书信格式.pdf"], ["图表万能句.pdf", "files/%E5%9B%BE%E8%A1%A8%E4%B8%87%E8%83%BD%E5%8F%A5.pdf", "284 KB", "图表万能句.pdf"], ["议论文万能句.pdf", "files/%E8%AE%AE%E8%AE%BA%E6%96%87%E4%B8%87%E8%83%BD%E5%8F%A5.pdf", "94 KB", "议论文万能句.pdf"], ["高考作文-郁梦婷.pdf", "files/%E9%AB%98%E8%80%83%E4%BD%9C%E6%96%87-%E9%83%81%E6%A2%A6%E5%A9%B7.pdf", "217 KB", "高考作文-郁梦婷.pdf"], ["高考日语作文模块练习 11篇.pdf", "files/%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E4%BD%9C%E6%96%87%E6%A8%A1%E5%9D%97%E7%BB%83%E4%B9%A0%2011%E7%AF%87.pdf", "355 KB", "高考日语作文模块练习 11篇.pdf"], ["高考日语作文模块练习.docx", "files/%E9%AB%98%E8%80%83%E6%97%A5%E8%AF%AD%E4%BD%9C%E6%96%87%E6%A8%A1%E5%9D%97%E7%BB%83%E4%B9%A0.docx", "65 KB", "高考日语作文模块练习.docx"]]}, {"id": "vocab", "icon": "📝", "name": "四、词汇与默写", "desc": "单词默写纸、默写计划、动词/敬语默写表等词汇积累类资料。", "upload": true, "items": [["1600答案.doc", "files/1600%E7%AD%94%E6%A1%88.doc", "28 KB", "1600答案.doc"], ["七年级默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B8%83%E5%B9%B4%E7%BA%A7/%E4%B8%83%E5%B9%B4%E7%BA%A7%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "17 KB", "单词默写纸\\七年级\\七年级默写纸.xlsx"], ["九省联考 听写单 杜宜祥.docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E4%B9%9D%E7%9C%81%E8%81%94%E8%80%83%20%E5%90%AC%E5%86%99%E5%8D%95%20%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "15 KB", "导学案默写单\\九省联考 听写单 杜宜祥.docx"], ["九省联考听力导学　杜宜祥.docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E4%B9%9D%E7%9C%81%E8%81%94%E8%80%83%E5%90%AC%E5%8A%9B%E5%AF%BC%E5%AD%A6%E3%80%80%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "18 KB", "导学案默写单\\九省联考听力导学　杜宜祥.docx"], ["冲刺一听写单 .docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E5%86%B2%E5%88%BA%E4%B8%80%E5%90%AC%E5%86%99%E5%8D%95%20.docx", "15 KB", "导学案默写单\\冲刺一听写单 .docx"], ["冲刺一听力导学.docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E5%86%B2%E5%88%BA%E4%B8%80%E5%90%AC%E5%8A%9B%E5%AF%BC%E5%AD%A6.docx", "17 KB", "导学案默写单\\冲刺一听力导学.docx"], ["冲刺卷（三）试题卷.docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E5%86%B2%E5%88%BA%E5%8D%B7%EF%BC%88%E4%B8%89%EF%BC%89%E8%AF%95%E9%A2%98%E5%8D%B7.docx", "41 KB", "导学案默写单\\冲刺卷（三）试题卷.docx"], ["動詞默写表.docx", "files/%E5%8B%95%E8%A9%9E%E9%BB%98%E5%86%99%E8%A1%A8.docx", "21 KB", "動詞默写表.docx"], ["单词默写计划.docx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E8%AE%A1%E5%88%92.docx", "11 KB", "单词默写计划.docx"], ["听力导学案詹.docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E5%90%AC%E5%8A%9B%E5%AF%BC%E5%AD%A6%E6%A1%88%E8%A9%B9.docx", "19 KB", "导学案默写单\\听力导学案詹.docx"], ["形变特五练习.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E5%BD%A2%E5%8F%98%E7%89%B9%E4%BA%94%E7%BB%83%E4%B9%A0.docx", "11 KB", "默写纸\\形变特五练习.docx"], ["必修一单词默写纸.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E5%BF%85%E4%BF%AE%E4%B8%80%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8.docx", "19 KB", "默写纸\\必修一单词默写纸.docx"], ["必修一句子默写纸.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E5%BF%85%E4%BF%AE%E4%B8%80%E5%8F%A5%E5%AD%90%E9%BB%98%E5%86%99%E7%BA%B8.docx", "13 KB", "默写纸\\必修一句子默写纸.docx"], ["必修三单词默写纸.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E5%BF%85%E4%BF%AE%E4%B8%89%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8.docx", "12 KB", "默写纸\\必修三单词默写纸.docx"], ["必修二单词默写纸.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E5%BF%85%E4%BF%AE%E4%BA%8C%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8.docx", "17 KB", "默写纸\\必修二单词默写纸.docx"], ["必修二句子默写纸.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E5%BF%85%E4%BF%AE%E4%BA%8C%E5%8F%A5%E5%AD%90%E9%BB%98%E5%86%99%E7%BA%B8.docx", "13 KB", "默写纸\\必修二句子默写纸.docx"], ["必修第一课补充默写纸.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E5%BF%85%E4%BF%AE%E7%AC%AC%E4%B8%80%E8%AF%BE%E8%A1%A5%E5%85%85%E9%BB%98%E5%86%99%E7%BA%B8.docx", "11 KB", "默写纸\\必修第一课补充默写纸.docx"], ["接续练习.docx", "files/%E9%BB%98%E5%86%99%E7%BA%B8/%E6%8E%A5%E7%BB%AD%E7%BB%83%E4%B9%A0.docx", "11 KB", "默写纸\\接续练习.docx"], ["敬语默写表.docx", "files/%E6%95%AC%E8%AF%AD%E9%BB%98%E5%86%99%E8%A1%A8.docx", "13 KB", "敬语默写表.docx"], ["第一课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B8%80%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第一课默写纸.xlsx"], ["第一课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B8%80%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "11 KB", "单词默写纸\\八年级\\第一课默写纸.xlsx"], ["第七课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B8%83%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第七课默写纸.xlsx"], ["第七课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B8%83%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第七课默写纸.xlsx"], ["第三课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B8%89%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第三课默写纸.xlsx"], ["第三课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B8%89%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第三课默写纸.xlsx"], ["第九课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B9%9D%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第九课默写纸.xlsx"], ["第九课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%B9%9D%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第九课默写纸.xlsx"], ["第二课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%BA%8C%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第二课默写纸.xlsx"], ["第二课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%BA%8C%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第二课默写纸.xlsx"], ["第五課+导学案.docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E7%AC%AC%E4%BA%94%E8%AA%B2%2B%E5%AF%BC%E5%AD%A6%E6%A1%88.docx", "32 KB", "导学案默写单\\第五課+导学案.docx"], ["第五课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%BA%94%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第五课默写纸.xlsx"], ["第五课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E4%BA%94%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第五课默写纸.xlsx"], ["第八课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%85%AB%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第八课默写纸.xlsx"], ["第八课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%85%AB%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第八课默写纸.xlsx"], ["第六课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%85%AD%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第六课默写纸.xlsx"], ["第六课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%85%AD%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第六课默写纸.xlsx"], ["第十一课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%8D%81%E4%B8%80%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第十一课默写纸.xlsx"], ["第十二課+导学案.docx", "files/%E5%AF%BC%E5%AD%A6%E6%A1%88%E9%BB%98%E5%86%99%E5%8D%95/%E7%AC%AC%E5%8D%81%E4%BA%8C%E8%AA%B2%2B%E5%AF%BC%E5%AD%A6%E6%A1%88.docx", "29 KB", "导学案默写单\\第十二課+导学案.docx"], ["第十二课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%8D%81%E4%BA%8C%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第十二课默写纸.xlsx"], ["第十课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%8D%81%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第十课默写纸.xlsx"], ["第四课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E4%B9%9D%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\九年级\\第四课默写纸.xlsx"], ["第四课默写纸.xlsx", "files/%E5%8D%95%E8%AF%8D%E9%BB%98%E5%86%99%E7%BA%B8/%E5%85%AB%E5%B9%B4%E7%BA%A7/%E7%AC%AC%E5%9B%9B%E8%AF%BE%E9%BB%98%E5%86%99%E7%BA%B8.xlsx", "9 KB", "单词默写纸\\八年级\\第四课默写纸.xlsx"], ["重点词汇，语法练习.docx", "files/%E9%87%8D%E7%82%B9%E8%AF%8D%E6%B1%87%EF%BC%8C%E8%AF%AD%E6%B3%95%E7%BB%83%E4%B9%A0.docx", "16 KB", "重点词汇，语法练习.docx"]]}, {"id": "grammar", "icon": "🔤", "name": "五、语法", "desc": "助词、助动词、敬语、活用、形式名词等语法专项讲义、练习与图片素材。", "upload": true, "items": [["1.png", "files/%E3%82%88%E3%81%86%E3%80%80%E3%81%9D%E3%81%86%E3%80%80%E3%81%BF%E3%81%9F%E3%81%84/1.png", "189 KB", "よう　そう　みたい\\1.png"], ["2.png", "files/%E3%82%88%E3%81%86%E3%80%80%E3%81%9D%E3%81%86%E3%80%80%E3%81%BF%E3%81%9F%E3%81%84/2.png", "190 KB", "よう　そう　みたい\\2.png"], ["がは区别.docx", "files/%E3%81%8C%E3%81%AF%E5%8C%BA%E5%88%AB.docx", "11 KB", "がは区别.docx"], ["でも、さえ、まで.docx", "files/%E3%81%A7%E3%82%82%E3%80%81%E3%81%95%E3%81%88%E3%80%81%E3%81%BE%E3%81%A7.docx", "189 KB", "でも、さえ、まで.docx"], ["とたらばなら.docx", "files/%E3%81%A8%E3%81%9F%E3%82%89%E3%81%B0%E3%81%AA%E3%82%89.docx", "13 KB", "とたらばなら.docx"], ["に的用法.txt", "files/%E3%81%AB%E7%9A%84%E7%94%A8%E6%B3%95.txt", "719 B", "に的用法.txt"], ["よう　そう　みたい.png", "files/%E3%82%88%E3%81%86%E3%80%80%E3%81%9D%E3%81%86%E3%80%80%E3%81%BF%E3%81%9F%E3%81%84/%E3%82%88%E3%81%86%E3%80%80%E3%81%9D%E3%81%86%E3%80%80%E3%81%BF%E3%81%9F%E3%81%84.png", "214 KB", "よう　そう　みたい\\よう　そう　みたい.png"], ["ようだ、みたいだ、らしい、そうだ.pdf", "files/%E3%82%88%E3%81%86%E3%81%A0%E3%80%81%E3%81%BF%E3%81%9F%E3%81%84%E3%81%A0%E3%80%81%E3%82%89%E3%81%97%E3%81%84%E3%80%81%E3%81%9D%E3%81%86%E3%81%A0.pdf", "173 KB", "ようだ、みたいだ、らしい、そうだ.pdf"], ["何.docx", "files/%E4%BD%95.docx", "11 KB", "何.docx"], ["使役.txt", "files/%E4%BD%BF%E5%BD%B9.txt", "1 KB", "使役.txt"], ["假定四词.pdf", "files/%E5%81%87%E5%AE%9A%E5%9B%9B%E8%AF%8D.pdf", "511 KB", "假定四词.pdf"], ["动词敬语表.pdf", "files/%E5%8A%A8%E8%AF%8D%E6%95%AC%E8%AF%AD%E8%A1%A8.pdf", "64 KB", "动词敬语表.pdf"], ["动词敬语表_加水印.pdf", "files/%E5%8A%A8%E8%AF%8D%E6%95%AC%E8%AF%AD%E8%A1%A8_%E5%8A%A0%E6%B0%B4%E5%8D%B0.pdf", "91 KB", "动词敬语表_加水印.pdf"], ["动词活用变形练习.pdf", "files/%E5%8A%A8%E8%AF%8D%E6%B4%BB%E7%94%A8%E5%8F%98%E5%BD%A2%E7%BB%83%E4%B9%A0.pdf", "61 KB", "动词活用变形练习.pdf"], ["助数词总结.pdf", "files/%E5%8A%A9%E6%95%B0%E8%AF%8D%E6%80%BB%E7%BB%93.pdf", "180 KB", "助数词总结.pdf"], ["助词复习题（答案付き）.pdf", "files/%E5%8A%A9%E8%AF%8D%E5%A4%8D%E4%B9%A0%E9%A2%98%EF%BC%88%E7%AD%94%E6%A1%88%E4%BB%98%E3%81%8D%EF%BC%89.pdf", "232 KB", "助词复习题（答案付き）.pdf"], ["助词复习题（答案無し）.pdf", "files/%E5%8A%A9%E8%AF%8D%E5%A4%8D%E4%B9%A0%E9%A2%98%EF%BC%88%E7%AD%94%E6%A1%88%E7%84%A1%E3%81%97%EF%BC%89.pdf", "231 KB", "助词复习题（答案無し）.pdf"], ["助词总结.pdf", "files/%E5%8A%A9%E8%AF%8D%E6%80%BB%E7%BB%93.pdf", "155 KB", "助词总结.pdf"], ["助词用法整理讲义.docx", "files/%E5%8A%A9%E8%AF%8D%E7%94%A8%E6%B3%95%E6%95%B4%E7%90%86%E8%AE%B2%E4%B9%89.docx", "403 KB", "助词用法整理讲义.docx"], ["助词练习.docx", "files/%E5%8A%A9%E8%AF%8D%E7%BB%83%E4%B9%A0.docx", "34 KB", "助词练习.docx"], ["口語表現，聴解参照.pdf", "files/%E5%8F%A3%E8%AA%9E%E8%A1%A8%E7%8F%BE%EF%BC%8C%E8%81%B4%E8%A7%A3%E5%8F%82%E7%85%A7.pdf", "96 KB", "口語表現，聴解参照.pdf"], ["形变.jpg", "files/%E5%BD%A2%E5%8F%98.jpg", "125 KB", "形变.jpg"], ["形变表.xlsx", "files/%E5%BD%A2%E5%8F%98%E8%A1%A8.xlsx", "12 KB", "形变表.xlsx"], ["形容词1.jpg", "files/%E5%BD%A2%E5%AE%B9%E8%AF%8D1.jpg", "166 KB", "形容词1.jpg"], ["形容词2.jpg", "files/%E5%BD%A2%E5%AE%B9%E8%AF%8D2.jpg", "295 KB", "形容词2.jpg"], ["形式名词-上、わけ、もの、こと.pdf", "files/%E5%BD%A2%E5%BC%8F%E5%90%8D%E8%AF%8D-%E4%B8%8A%E3%80%81%E3%82%8F%E3%81%91%E3%80%81%E3%82%82%E3%81%AE%E3%80%81%E3%81%93%E3%81%A8.pdf", "301 KB", "形式名词-上、わけ、もの、こと.pdf"], ["汾高补助动词梳理2021.6.21.docx", "files/%E6%B1%BE%E9%AB%98%E8%A1%A5%E5%8A%A9%E5%8A%A8%E8%AF%8D%E6%A2%B3%E7%90%862021.6.21.docx", "17 KB", "汾高补助动词梳理2021.6.21.docx"], ["疑问词+か.docx", "files/%E7%96%91%E9%97%AE%E8%AF%8D%2B%E3%81%8B.docx", "12 KB", "疑问词+か.docx"], ["第一课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E4%B8%80%E8%AF%BE.docx", "12 KB", "语法翻译题\\第一课.docx"], ["第七课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E4%B8%83%E8%AF%BE.docx", "11 KB", "语法翻译题\\第七课.docx"], ["第三课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E4%B8%89%E8%AF%BE.docx", "11 KB", "语法翻译题\\第三课.docx"], ["第九课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E4%B9%9D%E8%AF%BE.docx", "11 KB", "语法翻译题\\第九课.docx"], ["第二课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E4%BA%8C%E8%AF%BE.docx", "11 KB", "语法翻译题\\第二课.docx"], ["第五课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E4%BA%94%E8%AF%BE.docx", "11 KB", "语法翻译题\\第五课.docx"], ["第八课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E5%85%AB%E8%AF%BE.docx", "11 KB", "语法翻译题\\第八课.docx"], ["第六课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E5%85%AD%E8%AF%BE.docx", "11 KB", "语法翻译题\\第六课.docx"], ["第四课.docx", "files/%E8%AF%AD%E6%B3%95%E7%BF%BB%E8%AF%91%E9%A2%98/%E7%AC%AC%E5%9B%9B%E8%AF%BE.docx", "11 KB", "语法翻译题\\第四课.docx"], ["１１１１１１１１.png", "files/%E3%82%88%E3%81%86%E3%80%80%E3%81%9D%E3%81%86%E3%80%80%E3%81%BF%E3%81%9F%E3%81%84/%EF%BC%91%EF%BC%91%EF%BC%91%EF%BC%91%EF%BC%91%EF%BC%91%EF%BC%91%EF%BC%91.png", "129 KB", "よう　そう　みたい\\１１１１１１１１.png"]]}, {"id": "textbook", "icon": "📚", "name": "六、教材与教辅", "desc": "电子教材、人教版资料、假名教学材料及合格性考试资料（体积过大，未上传云端，以下为本地文件）。", "upload": false, "items": [["电子教材/", null, "25 个", ""], ["人教/", null, "191 个", ""], ["假名教学材料/", null, "131 个", ""], ["合格性考试/", null, "7 个", ""]]}, {"id": "exam", "icon": "📄", "name": "七、试卷、真题与参考答案", "desc": "高考真题、模拟卷、专项练习卷及对应的参考答案、答题卡等。", "upload": true, "items": [["13年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/13%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "16 KB", "真题改填空\\13年单选导学案杜宜祥.docx"], ["14年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/14%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "15 KB", "真题改填空\\14年单选导学案杜宜祥.docx"], ["15年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/15%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "16 KB", "真题改填空\\15年单选导学案杜宜祥.docx"], ["16年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/16%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "16 KB", "真题改填空\\16年单选导学案杜宜祥.docx"], ["17年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/17%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "15 KB", "真题改填空\\17年单选导学案杜宜祥.docx"], ["18年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/18%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "15 KB", "真题改填空\\18年单选导学案杜宜祥.docx"], ["19年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/19%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "15 KB", "真题改填空\\19年单选导学案杜宜祥.docx"], ["20年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/20%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "15 KB", "真题改填空\\20年单选导学案杜宜祥.docx"], ["21年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/21%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "15 KB", "真题改填空\\21年单选导学案杜宜祥.docx"], ["22年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/22%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "14 KB", "真题改填空\\22年单选导学案杜宜祥.docx"], ["23年单选导学案杜宜祥.docx", "files/%E7%9C%9F%E9%A2%98%E6%94%B9%E5%A1%AB%E7%A9%BA/23%E5%B9%B4%E5%8D%95%E9%80%89%E5%AF%BC%E5%AD%A6%E6%A1%88%E6%9D%9C%E5%AE%9C%E7%A5%A5.docx", "14 KB", "真题改填空\\23年单选导学案杜宜祥.docx"], ["单选+完形填空参考答案.pdf", "files/%E5%8D%95%E9%80%89%2B%E5%AE%8C%E5%BD%A2%E5%A1%AB%E7%A9%BA%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88.pdf", "539 KB", "单选+完形填空参考答案.pdf"], ["南充2022高三摸底日语试卷.pdf", "files/%E5%8D%97%E5%85%852022%E9%AB%98%E4%B8%89%E6%91%B8%E5%BA%95%E6%97%A5%E8%AF%AD%E8%AF%95%E5%8D%B7.pdf", "837 KB", "南充2022高三摸底日语试卷.pdf"], ["完形选择参考答案.pdf", "files/%E5%AE%8C%E5%BD%A2%E9%80%89%E6%8B%A9%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88.pdf", "50 KB", "完形选择参考答案.pdf"], ["必修一 第1课 对应练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC1%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "44 KB", "必修补充练习\\必修一 第1课 对应练习 （含答案）.doc"], ["必修一 第1课 对应练习2 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC1%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A02%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "26 KB", "必修补充练习\\必修一 第1课 对应练习2 （含答案）.doc"], ["必修一 第1课 对应练习3 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC1%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A03%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "32 KB", "必修补充练习\\必修一 第1课 对应练习3 （含答案）.doc"], ["必修一 第2课 主观题练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC2%E8%AF%BE%20%E4%B8%BB%E8%A7%82%E9%A2%98%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "18 KB", "必修补充练习\\必修一 第2课 主观题练习 （含答案）.doc"], ["必修一 第2课 对应练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC2%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "34 KB", "必修补充练习\\必修一 第2课 对应练习 （含答案）.doc"], ["必修一 第2课 对应练习2 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC2%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A02%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "34 KB", "必修补充练习\\必修一 第2课 对应练习2 （含答案）.doc"], ["必修一 第3课 对应练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC3%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "38 KB", "必修补充练习\\必修一 第3课 对应练习 （含答案）.doc"], ["必修一 第4课 对应练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC4%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "30 KB", "必修补充练习\\必修一 第4课 对应练习 （含答案）.doc"], ["必修一 第4课 对应练习2 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%AC%AC4%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A02%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "40 KB", "必修补充练习\\必修一 第4课 对应练习2 （含答案）.doc"], ["必修一 综合练习1 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A01%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "112 KB", "必修补充练习\\必修一 综合练习1 （含答案）.doc"], ["必修一 综合练习2 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A02%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "69 KB", "必修补充练习\\必修一 综合练习2 （含答案）.doc"], ["必修一 综合练习3 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%B8%80%20%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A03%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "25 KB", "必修补充练习\\必修一 综合练习3 （含答案）.doc"], ["必修二 第5课 主观题练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%BA%8C%20%E7%AC%AC5%E8%AF%BE%20%E4%B8%BB%E8%A7%82%E9%A2%98%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "14 KB", "必修补充练习\\必修二 第5课 主观题练习 （含答案）.doc"], ["必修二 第5课 词汇练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%BA%8C%20%E7%AC%AC5%E8%AF%BE%20%E8%AF%8D%E6%B1%87%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "32 KB", "必修补充练习\\必修二 第5课 词汇练习 （含答案）.doc"], ["必修二 第6课 主观题练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%BA%8C%20%E7%AC%AC6%E8%AF%BE%20%E4%B8%BB%E8%A7%82%E9%A2%98%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "49 KB", "必修补充练习\\必修二 第6课 主观题练习 （含答案）.doc"], ["必修二 第6课 对应练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%BA%8C%20%E7%AC%AC6%E8%AF%BE%20%E5%AF%B9%E5%BA%94%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "26 KB", "必修补充练习\\必修二 第6课 对应练习 （含答案）.doc"], ["必修二 综合练习 （含答案）.doc", "files/%E5%BF%85%E4%BF%AE%E8%A1%A5%E5%85%85%E7%BB%83%E4%B9%A0/%E5%BF%85%E4%BF%AE%E4%BA%8C%20%E7%BB%BC%E5%90%88%E7%BB%83%E4%B9%A0%20%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%88%EF%BC%89.doc", "132 KB", "必修补充练习\\必修二 综合练习 （含答案）.doc"], ["日语-合格性考试模拟试题（2022年度）(1).pdf", "", "134.5 MB", "本地文件（141MB，超100MB上限未上传，见教学资料/试卷真题目录）"], ["日语三轮参考答案.pdf", "files/%E6%97%A5%E8%AF%AD%E4%B8%89%E8%BD%AE%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88.pdf", "146 KB", "日语三轮参考答案.pdf"], ["日语二轮参考答案.pdf", "files/%E6%97%A5%E8%AF%AD%E4%BA%8C%E8%BD%AE%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88.pdf", "92 KB", "日语二轮参考答案.pdf"], ["日语二轮答案.docx", "files/%E6%97%A5%E8%AF%AD%E4%BA%8C%E8%BD%AE%E7%AD%94%E6%A1%88.docx", "44 KB", "日语二轮答案.docx"], ["日语单项选择训练参考答案.doc", "files/%E6%97%A5%E8%AF%AD%E5%8D%95%E9%A1%B9%E9%80%89%E6%8B%A9%E8%AE%AD%E7%BB%83%E5%8F%82%E8%80%83%E7%AD%94%E6%A1%88.doc", "28 KB", "日语单项选择训练参考答案.doc"], ["日语答题卡（七天）.pdf", "files/%E6%97%A5%E8%AF%AD%E7%AD%94%E9%A2%98%E5%8D%A1%EF%BC%88%E4%B8%83%E5%A4%A9%EF%BC%89.pdf", "4.3 MB", "日语答题卡（七天）.pdf"], ["日语考试注意点.pdf", "files/%E6%97%A5%E8%AF%AD%E8%80%83%E8%AF%95%E6%B3%A8%E6%84%8F%E7%82%B9.pdf", "183 KB", "日语考试注意点.pdf"], ["日语高考真题2014-2023.pdf", "files/%E6%97%A5%E8%AF%AD%E9%AB%98%E8%80%83%E7%9C%9F%E9%A2%982014-2023.pdf", "709 KB", "日语高考真题2014-2023.pdf"], ["词汇阅读检测卷6月10号.docx", "files/%E8%AF%8D%E6%B1%87%E9%98%85%E8%AF%BB%E6%A3%80%E6%B5%8B%E5%8D%B76%E6%9C%8810%E5%8F%B7.docx", "17 KB", "词汇阅读检测卷6月10号.docx"], ["试卷 2023年12月高三教学测试日语.docx", "files/%E8%AF%95%E5%8D%B7%202023%E5%B9%B412%E6%9C%88%E9%AB%98%E4%B8%89%E6%95%99%E5%AD%A6%E6%B5%8B%E8%AF%95%E6%97%A5%E8%AF%AD.docx", "26 KB", "试卷 2023年12月高三教学测试日语.docx"]]}, {"id": "culture", "icon": "🏯", "name": "八、文化常识", "desc": "日本文化常识题汇总与精简版。", "upload": true, "items": [["文常.pdf", "files/%E6%96%87%E5%B8%B8.pdf", "475 KB", "文常.pdf"], ["（含答案2021年10月更新）文化常识题汇总.pdf", "files/%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%882021%E5%B9%B410%E6%9C%88%E6%9B%B4%E6%96%B0%EF%BC%89%E6%96%87%E5%8C%96%E5%B8%B8%E8%AF%86%E9%A2%98%E6%B1%87%E6%80%BB.pdf", "193 KB", "（含答案2021年10月更新）文化常识题汇总.pdf"], ["（含答案2023年06月更新）文化常识题汇总.pdf", "files/%EF%BC%88%E5%90%AB%E7%AD%94%E6%A1%882023%E5%B9%B406%E6%9C%88%E6%9B%B4%E6%96%B0%EF%BC%89%E6%96%87%E5%8C%96%E5%B8%B8%E8%AF%86%E9%A2%98%E6%B1%87%E6%80%BB.pdf", "475 KB", "（含答案2023年06月更新）文化常识题汇总.pdf"]]}, {"id": "grade", "icon": "📅", "name": "九、成绩、课表与考勤", "desc": "各年级成绩明细、作息/晚自习课表、教学进度、花名册与考勤相关文件。", "upload": true, "items": [["21-22作息时间表（2022年5月12日起执行）正.xlsx", "files/21-22%E4%BD%9C%E6%81%AF%E6%97%B6%E9%97%B4%E8%A1%A8%EF%BC%882022%E5%B9%B45%E6%9C%8812%E6%97%A5%E8%B5%B7%E6%89%A7%E8%A1%8C%EF%BC%89%E6%AD%A3.xlsx", "13 KB", "21-22作息时间表（2022年5月12日起执行）正.xlsx"], ["23-24高三晚自习周末课表.xlsx", "files/23-24%E9%AB%98%E4%B8%89%E6%99%9A%E8%87%AA%E4%B9%A0%E5%91%A8%E6%9C%AB%E8%AF%BE%E8%A1%A8.xlsx", "17 KB", "23-24高三晚自习周末课表.xlsx"], ["9月考日语生成绩.xlsx", "files/9%E6%9C%88%E8%80%83%E6%97%A5%E8%AF%AD%E7%94%9F%E6%88%90%E7%BB%A9.xlsx", "11 KB", "9月考日语生成绩.xlsx"], ["【2024届高三第二学期期初质量监测】所有班级学生小题得分明细(1).xlsx", "files/%E3%80%902024%E5%B1%8A%E9%AB%98%E4%B8%89%E7%AC%AC%E4%BA%8C%E5%AD%A6%E6%9C%9F%E6%9C%9F%E5%88%9D%E8%B4%A8%E9%87%8F%E7%9B%91%E6%B5%8B%E3%80%91%E6%89%80%E6%9C%89%E7%8F%AD%E7%BA%A7%E5%AD%A6%E7%94%9F%E5%B0%8F%E9%A2%98%E5%BE%97%E5%88%86%E6%98%8E%E7%BB%86%281%29.xlsx", "395 KB", "【2024届高三第二学期期初质量监测】所有班级学生小题得分明细(1).xlsx"], ["基础巩固计划.xlsx", "files/%E5%9F%BA%E7%A1%80%E5%B7%A9%E5%9B%BA%E8%AE%A1%E5%88%92.xlsx", "11 KB", "基础巩固计划.xlsx"], ["手阅卡打分规范.pdf", "files/%E6%89%8B%E9%98%85%E5%8D%A1%E6%89%93%E5%88%86%E8%A7%84%E8%8C%83.pdf", "242 KB", "手阅卡打分规范.pdf"], ["教学进度表.xlsx", "files/%E6%95%99%E5%AD%A6%E8%BF%9B%E5%BA%A6%E8%A1%A8.xlsx", "11 KB", "教学进度表.xlsx"], ["教师表.jpg", "files/%E6%95%99%E5%B8%88%E8%A1%A8.jpg", "134 KB", "教师表.jpg"], ["暑期花名册.xlsx", "files/%E6%9A%91%E6%9C%9F%E8%8A%B1%E5%90%8D%E5%86%8C.xlsx", "14 KB", "暑期花名册.xlsx"], ["考勤表.xlsx", "files/%E8%80%83%E5%8B%A4%E8%A1%A8.xlsx", "42 KB", "考勤表.xlsx"], ["高一日语期末成绩.xlsx", "files/%E9%AB%98%E4%B8%80%E6%97%A5%E8%AF%AD%E6%9C%9F%E6%9C%AB%E6%88%90%E7%BB%A9.xlsx", "11 KB", "高一日语期末成绩.xlsx"], ["高三期初考试成绩.xlsx", "files/%E9%AB%98%E4%B8%89%E6%9C%9F%E5%88%9D%E8%80%83%E8%AF%95%E6%88%90%E7%BB%A9.xlsx", "11 KB", "高三期初考试成绩.xlsx"], ["高二下学期期末日语成绩.xlsx", "files/%E9%AB%98%E4%BA%8C%E4%B8%8B%E5%AD%A6%E6%9C%9F%E6%9C%9F%E6%9C%AB%E6%97%A5%E8%AF%AD%E6%88%90%E7%BB%A9.xlsx", "11 KB", "高二下学期期末日语成绩.xlsx"], ["高二下课表.xlsx", "files/%E9%AB%98%E4%BA%8C%E4%B8%8B%E8%AF%BE%E8%A1%A8.xlsx", "20 KB", "高二下课表.xlsx"]]}, {"id": "note", "icon": "📒", "name": "十、听课笔记与错题", "desc": "教师听课记录、个人教学笔记与错题收集。", "upload": true, "items": [["20年真题.xls", "files/%E9%94%99%E9%A2%98/20%E5%B9%B4%E7%9C%9F%E9%A2%98.xls", "94 KB", "错题\\20年真题.xls"], ["21年.xls", "files/%E9%94%99%E9%A2%98/21%E5%B9%B4.xls", "95 KB", "错题\\21年.xls"], ["打印.docx", "files/%E9%94%99%E9%A2%98/%E6%89%93%E5%8D%B0.docx", "15 KB", "错题\\打印.docx"], ["热身考.xls", "files/%E9%94%99%E9%A2%98/%E7%83%AD%E8%BA%AB%E8%80%83.xls", "96 KB", "错题\\热身考.xls"], ["笔记.docx", "files/%E7%AC%94%E8%AE%B0.docx", "39 KB", "笔记.docx"], ["错题收集.docx", "files/%E9%94%99%E9%A2%98%E6%94%B6%E9%9B%86.docx", "17 KB", "错题收集.docx"], ["错题模板.docx", "files/%E9%94%99%E9%A2%98/%E9%94%99%E9%A2%98%E6%A8%A1%E6%9D%BF.docx", "12 KB", "错题\\错题模板.docx"]]}, {"id": "image", "icon": "🖼️", "name": "十一、图片与素材", "desc": "散落的图片素材（多为语法/假名示意图）。", "upload": true, "items": [["ecc1deb6339cd55105dc75d7c1543ac.png", "files/ecc1deb6339cd55105dc75d7c1543ac.png", "94 KB", "ecc1deb6339cd55105dc75d7c1543ac.png"], ["f14819c0abf721b6dd34d33cb341c09.png", "files/f14819c0abf721b6dd34d33cb341c09.png", "107 KB", "f14819c0abf721b6dd34d33cb341c09.png"], ["はが.png", "files/%E3%81%AF%E3%81%8C.png", "36 KB", "はが.png"], ["五十音.png", "files/%E4%BA%94%E5%8D%81%E9%9F%B3.png", "173 KB", "五十音.png"]]}];
+const PWD = "admin888";
+const LS_KEY = "teach_data_v3";
+
+let DATA = loadData();
+let activeCat = null;
+
+function loadData(){
+  try{ const s = localStorage.getItem(LS_KEY); if(s) return JSON.parse(s); }catch(e){}
+  return JSON.parse(JSON.stringify(DEFAULT_DATA));
+}
+function saveData(){
+  localStorage.setItem(LS_KEY, JSON.stringify(DATA));
+  render();
+  toast("✅ 已保存到本浏览器");
+}
+function esc(s){return (s||'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+function toast(msg){
+  const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),1800);
+}
+
+/* ===== 前台渲染 ===== */
+const qEl=document.getElementById('q'), listEl=document.getElementById('list'), countEl=document.getElementById('count');
+const chipsEl=document.getElementById('chips');
+
+function buildChips(){
+  chipsEl.innerHTML='';
+  const all=document.createElement('div'); all.className='chip'; all.textContent='全部'; all.dataset.id='';
+  all.onclick=()=>{activeCat=null;syncChips();render();}; chipsEl.appendChild(all);
+  DATA.forEach(c=>{const el=document.createElement('div');el.className='chip';el.textContent=c.name.replace(/^[^、]*[、]/,'');
+    el.dataset.id=c.id; el.onclick=()=>{activeCat=c.id;syncChips();render();}; chipsEl.appendChild(el);});
+}
+function syncChips(){[...chipsEl.children].forEach((el,i)=>{
+  if(i===0)el.classList.toggle('active',activeCat===null);
+  else el.classList.toggle('active',el.dataset.id===activeCat);});}
+
+function render(){
+  const q=qEl.value.trim().toLowerCase();
+  listEl.innerHTML=''; let sc=0,si=0;
+  DATA.forEach(c=>{
+    if(activeCat&&c.id!==activeCat)return;
+    const m=c.items.filter(it=>!q||(it[0]||'').toLowerCase().includes(q)||(it[3]||'').toLowerCase().includes(q));
+    if(q&&m.length===0)return; sc++; si+=m.length;
+    const rows=m.map(it=>{
+      const link=it[1];
+      const note=it[3]?`<div class="note">📝 ${esc(it[3])}</div>`:'';
+      const nameTd=link?`<a href="${esc(link)}" target="_blank" rel="noopener">${esc(it[0])}</a>${note}`:`<span>${esc(it[0])}</span>${note}`;
+      const stat=link?`<span class="ok">✅ 可打开</span>`:`<span class="local">⚠️ 本地文件</span>`;
+      return `<tr><td class="name">${nameTd}</td><td class="type">${esc(it[2]||'')}</td><td class="stat">${stat}</td></tr>`;
+    }).join('');
+    const card=document.createElement('div'); card.className='cat';
+    card.innerHTML=`<div class="cat-head"><div class="cat-ico">${c.icon}</div>
+      <div class="cat-title">${esc(c.name)}</div><div class="cat-meta">${m.length} 项</div></div>
+      <div class="cat-desc">${esc(c.desc)}</div>
+      <table><thead><tr><th>文件 / 目录</th><th>大小 / 数量</th><th class="col-stat">状态</th></tr></thead>
+      <tbody>${rows}</tbody></table>`;
+    listEl.appendChild(card);
+  });
+  if(sc===0)listEl.innerHTML='<div class="empty">没有匹配「'+esc(q)+'」的资料</div>';
+  countEl.textContent=`显示 ${sc} 类 / ${si} 项`;
+}
+
+/* ===== 管理后台 ===== */
+function openAdmin(){ document.getElementById('pwdModal').classList.add('show'); document.getElementById('pwdInput').value=''; document.getElementById('pwdInput').focus(); }
+function closePwd(){ document.getElementById('pwdModal').classList.remove('show'); }
+function checkPwd(){
+  const v=document.getElementById('pwdInput').value;
+  if(v===PWD){ document.getElementById('pwdModal').classList.remove('show'); document.getElementById('adminPanel').classList.add('show'); buildAdmin(); }
+  else { document.getElementById('pwdErr').textContent='口令错误，请重试'; }
+}
+function closeAdmin(){ document.getElementById('adminPanel').classList.remove('show'); }
+
+function buildAdmin(){
+  const body=document.getElementById('adminBody'); body.innerHTML='';
+  DATA.forEach((c,ci)=>{
+    const box=document.createElement('div'); box.className='a-cat';
+    let rows=c.items.map((it,ji)=>`
+      <tr>
+        <td class="f-name"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="0" value="${esc(it[0]||'')}"></td>
+        <td class="f-link"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="1" placeholder="留空=本地文件" value="${esc(it[1]||'')}"></td>
+        <td class="f-size"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="2" value="${esc(it[2]||'')}"></td>
+        <td class="f-note"><input class="row-in" data-cat="${ci}" data-item="${ji}" data-f="3" value="${esc(it[3]||'')}"></td>
+        <td class="f-del"><button class="del" onclick="delItem(${ci},${ji})">✕</button></td>
+      </tr>`).join('');
+    box.innerHTML=`
+      <div class="a-cat-head">
+        <input class="row-in icon" data-cat="${ci}" data-f="icon" value="${esc(c.icon||'')}">
+        <input class="row-in name" data-cat="${ci}" data-f="name" value="${esc(c.name||'')}">
+        <button class="del" onclick="delCat(${ci})">删除分类</button>
+      </div>
+      <input class="desc-in" data-cat="${ci}" data-f="desc" value="${esc(c.desc||'')}" placeholder="分类说明">
+      <table class="a-tbl"><thead><tr><th class="f-name">名称</th><th class="f-link">链接 / 本地（留空为本地）</th><th class="f-size">大小/类型</th><th class="f-note">备注</th><th></th></tr></thead>
+      <tbody>${rows}</tbody></table>
+      <div class="mini" onclick="addItem(${ci})">＋ 新增条目</div>`;
+    body.appendChild(box);
+  });
+}
+document.getElementById('adminBody').addEventListener('input',e=>{
+  const t=e.target;
+  if(t.dataset.cat==null)return;
+  const ci=+t.dataset.cat;
+  if(t.dataset.item!=null){ DATA[ci].items[+t.dataset.item][t.dataset.f]=t.value; }
+  else { DATA[ci][t.dataset.f]=t.value; }
+});
+function delCat(ci){ DATA.splice(ci,1); buildAdmin(); render(); }
+function delItem(ci,ji){ DATA[ci].items.splice(ji,1); buildAdmin(); render(); }
+function addCat(){ DATA.push({id:'cat'+Date.now(),icon:'📁',name:'新分类',desc:'',upload:false,items:[['新文件','','','']]}); buildAdmin(); render(); }
+function addItem(ci){ DATA[ci].items.push(['新文件','','','']); buildAdmin(); render(); }
+
+function exportData(){
+  const blob=new Blob([JSON.stringify(DATA,null,2)],{type:'application/json'});
+  const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='site_data.json'; a.click();
+  toast('⬇ 已导出 site_data.json');
+}
+function importData(input){
+  const f=input.files[0]; if(!f)return;
+  const r=new FileReader();
+  r.onload=()=>{ try{ const d=JSON.parse(r.result); if(!Array.isArray(d))throw 0; DATA=d; localStorage.setItem(LS_KEY,JSON.stringify(DATA)); buildAdmin(); render(); toast('⬆ 已导入配置'); }
+    catch(e){ alert('配置文件格式不正确'); } };
+  r.readAsText(f); input.value='';
+}
+function resetData(){
+  if(!confirm('确定恢复为默认内容？本浏览器中的改动将丢失。'))return;
+  localStorage.removeItem(LS_KEY); DATA=loadData(); buildAdmin(); render(); toast('↺ 已恢复默认');
+}
+
+/* 初始化 */
+buildChips(); render();
+qEl.addEventListener('input',render);
+</script>
+</body>
+</html>
